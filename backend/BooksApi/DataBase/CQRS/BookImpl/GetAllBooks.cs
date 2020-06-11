@@ -26,6 +26,8 @@ namespace BooksApi.DataBase.CQRS.BookImpl
             using (var context = _contextProvider.GetContext())
             {
                 return await context.Books
+                    .Include(x => x.Author)
+                    .Include(x => x.Genre)
                     .Select(x => _mapper.Map<BookDB, Book>(x))
                     .ToListAsync();
             }
