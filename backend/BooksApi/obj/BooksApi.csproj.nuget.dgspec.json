@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/yan/Documents/summer_practice/backend/BooksApi/BooksApi.csproj": {}
+    "/home/yan/Documents/Books/backend/BooksApi/BooksApi.csproj": {}
   },
   "projects": {
-    "/home/yan/Documents/summer_practice/backend/BooksApi/BooksApi.csproj": {
+    "/home/yan/Documents/Books/backend/BooksApi/BooksApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/yan/Documents/summer_practice/backend/BooksApi/BooksApi.csproj",
+        "projectUniqueName": "/home/yan/Documents/Books/backend/BooksApi/BooksApi.csproj",
         "projectName": "BooksApi",
-        "projectPath": "/home/yan/Documents/summer_practice/backend/BooksApi/BooksApi.csproj",
+        "projectPath": "/home/yan/Documents/Books/backend/BooksApi/BooksApi.csproj",
         "packagesPath": "/home/yan/.nuget/packages/",
-        "outputPath": "/home/yan/Documents/summer_practice/backend/BooksApi/obj/",
+        "outputPath": "/home/yan/Documents/Books/backend/BooksApi/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/yan/.config/NuGet/NuGet.Config"
@@ -35,6 +35,36 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "AutoMapper.Extensions.ExpressionMapping": {
+              "target": "Package",
+              "version": "[3.1.2-preview01, )"
+            },
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            },
+            "MediatR": {
+              "target": "Package",
+              "version": "[8.0.1, )"
+            },
+            "MediatR.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[3.1.4, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[5.4.1, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
