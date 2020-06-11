@@ -1,0 +1,31 @@
+version: "3.7"
+
+services:
+
+  web:
+    build: ./web
+    restart: always
+    ports:
+      - "8089:3000"
+    stdin_open: true
+
+  backend:
+    build: ./backend/BooksApi
+    restart: always
+    ports:
+      - "8088:80"
+    depends_on:
+      - postgres
+    environment:
+      - CONNECTION_STRING=host=postgres-identity;port=5432;database=books;username=postgres;password=postgres
+
+  postgres:
+    image: postgres:latest
+    restart: always
+    volumes:
+      - ./database/data:/var/lib/postgresql/data
+      - ./database/scripts/seed.sql:/docker-entrypoint-initdb.d/seed.sql
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=books
