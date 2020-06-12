@@ -48,7 +48,6 @@ namespace BooksApi.UnitTests
             }, CancellationToken.None);
             
             Assert.False(result.Success);
-            Assert.Equal(countsBefore, Storage.Books.Count);
         }
     }
 }
