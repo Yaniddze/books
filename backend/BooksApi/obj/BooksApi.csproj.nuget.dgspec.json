@@ -66,11 +66,11 @@
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[5.0.0-preview.5.20278.2, )"
+              "version": "[3.1.4, )"
             },
             "Npgsql.EntityFrameworkCore.PostgreSQL": {
               "target": "Package",
-              "version": "[5.0.0-preview5, )"
+              "version": "[3.1.4, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
@@ -78,7 +78,7 @@
             },
             "Z.EntityFramework.Plus.EFCore": {
               "target": "Package",
-              "version": "[5.0.0-preview.3.20181.2-02, )"
+              "version": "[3.0.50, )"
             }
           },
           "imports": [
