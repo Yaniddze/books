@@ -30,6 +30,7 @@ namespace BooksApi.Installers
             // CQRS
             services.AddTransient<IFindQuery<Author>, FindAuthorQuery>();
             services.AddTransient<IFindQuery<Genre>, FindGenreQuery>();
+            services.AddTransient<IFindQuery<Book>, FindBookQuery>();
             services.AddTransient<IGetAllQuery<Book>, GetAllBooks>();
             services.AddTransient<ICommandHandler<AddBookCommand>, AddBookCommandHandler>();
             services.AddTransient<ICommandHandler<DeleteBooksCommand>, DeleteBookCommandHandler>();
