@@ -11,26 +11,33 @@ namespace BooksApi.UnitTests
 {
     public class DeleteBookUseCaseTests
     {
-        private readonly DeleteBooksUseCase _testable = new DeleteBooksUseCase(
-            new DeleteBookRequestValidator(), 
-            new DeleteBookCommandTestHandler()
-        );
+        private readonly Storage _storage = new Storage();
+
+        public DeleteBookUseCaseTests()
+        {
+            _testable = new DeleteBooksUseCase(
+                new DeleteBookRequestValidator(), 
+                new DeleteBookCommandTestHandler(_storage)
+            );
+        }
+
+        private readonly DeleteBooksUseCase _testable;
 
         [Fact]
         public async Task delete_book_success()
         {
-            var countsBefore = Storage.Books.Count;
+            var countsBefore = _storage.Books.Count;
             
             var result = await _testable.Handle(new DeleteBooksRequest
             {
                 BookIds = new Guid[]
                 {
-                    Storage.Books[0].Id, 
-                    Storage.Books[1].Id
+                    _storage.Books[0].Id, 
+                    _storage.Books[1].Id
                 },
             }, CancellationToken.None);
             
-            Assert.Equal(countsBefore - 2, Storage.Books.Count);
+            Assert.Equal(countsBefore - 2, _storage.Books.Count);
         }
         
         [Theory]
@@ -40,7 +47,7 @@ namespace BooksApi.UnitTests
         })]
         public async Task delete_book_failed(string[] ids)
         {
-            var countsBefore = Storage.Books.Count;
+            var countsBefore = _storage.Books.Count;
             
             var result = await _testable.Handle(new DeleteBooksRequest
             {

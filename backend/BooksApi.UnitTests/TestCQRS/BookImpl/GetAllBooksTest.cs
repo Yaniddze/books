@@ -8,9 +8,15 @@ namespace BooksApi.UnitTests.TestCQRS.BookImpl
 {
     internal class GetAllBooksTest: IGetAllQuery<Book>
     {
+        private readonly Storage _storage;
+
+        public GetAllBooksTest(Storage storage)
+        {
+            _storage = storage;
+        }
         public Task<IEnumerable<Book>> InvokeAsync()
         {
-            return Task.FromResult(Storage.Books.Select(x => x));
+            return Task.FromResult(_storage.Books.Select(x => x));
         }
     }
 }

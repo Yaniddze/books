@@ -6,7 +6,7 @@ namespace BooksApi.UnitTests.TestCQRS
 {
     public class Storage
     {
-        public static List<Book> Books { get; set; } = new List<Book>
+        public List<Book> Books { get; set; } = new List<Book>
         {
             new Book
             {
@@ -47,7 +47,7 @@ namespace BooksApi.UnitTests.TestCQRS
                 }
             }
         };
-        public static List<Author> Authors { get; set; } = new List<Author>
+        public List<Author> Authors { get; set; } = new List<Author>
         {
             new Author
             {
@@ -60,7 +60,7 @@ namespace BooksApi.UnitTests.TestCQRS
                 Name = "Some Author 2"
             }
         };
-        public static List<Genre> Genres { get; set; } = new List<Genre>
+        public List<Genre> Genres { get; set; } = new List<Genre>
         {
             new Genre()
             {

@@ -11,13 +11,19 @@ namespace BooksApi.UnitTests
 {
     public class AddBookUseCaseTests
     {
-        private readonly AddBookUseCase _testable = new AddBookUseCase(
-            new AddBookCommandTestHandler(), 
-            new AddBookRequestValidator(),
-            new FindAuthorTestQuery(), 
-            new FindGenreTestQuery()
-        );
+        private readonly AddBookUseCase _testable;
+        private readonly Storage _storage = new Storage();
 
+        public AddBookUseCaseTests()
+        {
+            _testable = new AddBookUseCase(
+                new AddBookCommandTestHandler(_storage), 
+                new AddBookRequestValidator(),
+                new FindAuthorTestQuery(_storage), 
+                new FindGenreTestQuery(_storage)
+            );
+        }
+        
         [Theory]
         [InlineData(
             "new book title",
@@ -93,7 +99,7 @@ namespace BooksApi.UnitTests
             string genreId
         )
         {
-            var booksCountBefore = Storage.Books.Count;
+            var booksCountBefore = _storage.Books.Count;
             var result = await _testable.Handle(new AddBookRequest
             {
                 BookTitle = bookTitle,
@@ -103,7 +109,7 @@ namespace BooksApi.UnitTests
             }, CancellationToken.None);
             
             Assert.False(result.Success);
-            Assert.Equal(booksCountBefore, Storage.Books.Count);
+            Assert.Equal(booksCountBefore, _storage.Books.Count);
         }
     }
 }

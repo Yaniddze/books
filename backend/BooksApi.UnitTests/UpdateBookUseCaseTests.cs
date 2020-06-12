@@ -14,6 +14,7 @@ namespace BooksApi.UnitTests
 {
     public class UpdateBookUseCaseTests
     {
+        private readonly Storage _storage = new Storage();
         public UpdateBookUseCaseTests()
         {
             IServiceCollection services = new ServiceCollection();
@@ -23,11 +24,11 @@ namespace BooksApi.UnitTests
             
             _testable = new UpdateBookUseCase(
                 new UpdateBookRequestValidator(), 
-                new UpdateBookCommandTestHandler(),
+                new UpdateBookCommandTestHandler(_storage),
                 services.BuildServiceProvider().GetService<IMapper>(),
-                new FindAuthorTestQuery(), 
-                new FindGenreTestQuery(),
-                new FindBookTestQuery()
+                new FindAuthorTestQuery(_storage), 
+                new FindGenreTestQuery(_storage),
+                new FindBookTestQuery(_storage)
             );
         }
 
@@ -36,9 +37,9 @@ namespace BooksApi.UnitTests
         [Fact]
         public async Task update_book_success()
         {
-            var tempBook = Storage.Books[0];
-            var tempAuthor = Storage.Authors[1];
-            var tempGenre = Storage.Genres[0];
+            var tempBook = _storage.Books[0];
+            var tempAuthor = _storage.Authors[1];
+            var tempGenre = _storage.Genres[0];
             var newTitle = "Updated title";
             var newYear = 898;
             

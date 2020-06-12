@@ -7,9 +7,15 @@ namespace BooksApi.UnitTests.TestCQRS.BookImpl
 {
     internal class DeleteBookCommandTestHandler: ICommandHandler<DeleteBooksCommand>
     {
+        private readonly Storage _storage;
+
+        public DeleteBookCommandTestHandler(Storage storage)
+        {
+            _storage = storage;
+        }
         public async Task HandleAsync(DeleteBooksCommand handled)
         {
-            Storage.Books.RemoveAll(book => handled.BookIds.Contains(book.Id));
+            _storage.Books.RemoveAll(book => handled.BookIds.Contains(book.Id));
         }
     }
 }

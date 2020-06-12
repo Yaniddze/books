@@ -6,9 +6,15 @@ namespace BooksApi.UnitTests.TestCQRS.BookImpl
 {
     internal class AddBookCommandTestHandler: ICommandHandler<AddBookCommand>
     {
+        private readonly Storage _storage;
+
+        public AddBookCommandTestHandler(Storage storage)
+        {
+            _storage = storage;
+        }
         public async Task HandleAsync(AddBookCommand handled)
         {
-            Storage.Books.Add(handled.BookToAdd);
+            _storage.Books.Add(handled.BookToAdd);
         }
     }
 }
