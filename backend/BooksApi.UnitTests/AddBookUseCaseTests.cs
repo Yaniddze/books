@@ -1,5 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
+using BooksApi.UnitTests.TestCQRS;
 using BooksApi.UnitTests.TestCQRS.AuthorImpl;
 using BooksApi.UnitTests.TestCQRS.BookImpl;
 using BooksApi.UnitTests.TestCQRS.GenreImpl;
@@ -92,6 +93,7 @@ namespace BooksApi.UnitTests
             string genreId
         )
         {
+            var booksCountBefore = Storage.Books.Count;
             var result = await _testable.Handle(new AddBookRequest
             {
                 BookTitle = bookTitle,
@@ -101,6 +103,7 @@ namespace BooksApi.UnitTests
             }, CancellationToken.None);
             
             Assert.False(result.Success);
+            Assert.Equal(booksCountBefore, Storage.Books.Count);
         }
     }
 }
