@@ -8,6 +8,7 @@ using BooksApi.DataBase.CQRS.GenreImpl;
 using BooksApi.Entities;
 using BooksApi.UseCases.AddBook;
 using BooksApi.UseCases.DeleteBooks;
+using BooksApi.UseCases.UpdateBook;
 using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +22,7 @@ namespace BooksApi.Installers
             // Validators
             services.AddTransient<IValidator<AddBookRequest>, AddBookRequestValidator>();
             services.AddTransient<IValidator<DeleteBooksRequest>, DeleteBookRequestValidator>();
+            services.AddTransient<IValidator<UpdateBookRequest>, UpdateBookRequestValidator>();
             
             // Entity context provider
             services.AddSingleton(new ContextProvider());
@@ -31,6 +33,7 @@ namespace BooksApi.Installers
             services.AddTransient<IGetAllQuery<Book>, GetAllBooks>();
             services.AddTransient<ICommandHandler<AddBookCommand>, AddBookCommandHandler>();
             services.AddTransient<ICommandHandler<DeleteBooksCommand>, DeleteBookCommandHandler>();
+            services.AddTransient<ICommandHandler<UpdateBookCommand>, UpdateBookCommandHandler>();
         }
     }
 }

@@ -1,12 +1,14 @@
 using System;
 using BooksApi.CQRS.Commands.Abstractions;
-using BooksApi.Entities;
 
 namespace BooksApi.CQRS.Commands
 {
     public class UpdateBookCommand: ICommand
     {
-        public Guid OldBookId { get; set; }
-        public Book NewBook { get; set; }
+        public Guid BookId { get; set; }
+        public int NewYear { get; set; }
+        public string NewTitle { get; set; }
+        public Guid NewAuthorId { get; set; }
+        public Guid NewGenreId { get; set; }
     }
 }

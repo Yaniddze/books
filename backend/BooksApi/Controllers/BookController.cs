@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using BooksApi.UseCases.AddBook;
 using BooksApi.UseCases.DeleteBooks;
 using BooksApi.UseCases.GetBooks;
+using BooksApi.UseCases.UpdateBook;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,7 +18,7 @@ namespace BooksApi.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost("add")]
+        [HttpPut("add")]
         public async Task<IActionResult> AddAsync([FromBody] AddBookRequest request)
         {
             var result = await _mediator.Send(request);
@@ -33,6 +34,13 @@ namespace BooksApi.Controllers
 
         [HttpDelete("delete")]
         public async Task<IActionResult> DeleteAsync([FromBody] DeleteBooksRequest request)
+        {
+            var result = await _mediator.Send(request);
+            return Ok(result);
+        }
+
+        [HttpPatch("update")]
+        public async Task<IActionResult> UpdateAsync([FromBody] UpdateBookRequest request)
         {
             var result = await _mediator.Send(request);
             return Ok(result);

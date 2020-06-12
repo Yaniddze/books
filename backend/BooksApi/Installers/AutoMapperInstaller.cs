@@ -1,7 +1,10 @@
+using System;
 using AutoMapper;
 using AutoMapper.Extensions.ExpressionMapping;
+using BooksApi.CQRS.Commands;
 using BooksApi.DataBase.Entities;
 using BooksApi.Entities;
+using BooksApi.UseCases.UpdateBook;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -73,6 +76,14 @@ namespace BooksApi.Installers
                     .ForMember(x => x.Id,
                         map => map.MapFrom(
                             dest => dest.Id
+                        ))
+                    .ForMember(x => x.AuthorId,
+                        map => map.MapFrom(
+                            dest => dest.Author.Id
+                        ))
+                    .ForMember(x => x.GenreId,
+                        map => map.MapFrom(
+                            dest => dest.Genre.Id
                         ));
 
                 options.CreateMap<AuthorDB, Author>()
@@ -84,7 +95,7 @@ namespace BooksApi.Installers
                         map => map.MapFrom(
                             dest => dest.Id
                         ));
-                
+
                 options.CreateMap<Author, AuthorDB>()
                     .ForMember(x => x.Name,
                         map => map.MapFrom(
@@ -94,7 +105,7 @@ namespace BooksApi.Installers
                         map => map.MapFrom(
                             dest => dest.Id
                         ));
-                
+
                 options.CreateMap<GenreDB, Genre>()
                     .ForMember(x => x.Title,
                         map => map.MapFrom(
@@ -104,7 +115,7 @@ namespace BooksApi.Installers
                         map => map.MapFrom(
                             dest => dest.Id
                         ));
-                
+
                 options.CreateMap<Genre, GenreDB>()
                     .ForMember(x => x.Title,
                         map => map.MapFrom(
@@ -113,6 +124,28 @@ namespace BooksApi.Installers
                     .ForMember(x => x.Id,
                         map => map.MapFrom(
                             dest => dest.Id
+                        ));
+
+                options.CreateMap<UpdateBookRequest, UpdateBookCommand>()
+                    .ForMember(x => x.BookId,
+                        map => map.MapFrom(
+                            dest => Guid.Parse(dest.BookId)
+                        ))
+                    .ForMember(x => x.NewAuthorId,
+                        map => map.MapFrom(
+                            dest => Guid.Parse(dest.NewAuthorId)
+                        ))
+                    .ForMember(x => x.NewGenreId,
+                        map => map.MapFrom(
+                            dest => Guid.Parse(dest.NewGenreId)
+                        ))
+                    .ForMember(x => x.NewTitle,
+                        map => map.MapFrom(
+                            dest => dest.NewTitle
+                        ))
+                    .ForMember(x => x.NewYear,
+                        map => map.MapFrom(
+                            dest => dest.NewYear
                         ));
             }, typeof(Startup));
         }
