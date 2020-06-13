@@ -50,9 +50,9 @@ namespace BooksApi
 
             app.UseCors(x =>
             {
-                x.AllowCredentials();
                 x.AllowAnyHeader();
                 x.AllowAnyMethod();
+                x.AllowAnyOrigin();
             });
 
             app.UseAuthorization();
