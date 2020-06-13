@@ -9,7 +9,6 @@ import {
   BookFillAction,
   Books,
   BooksActionTypes,
-  ErrorHttpAction,
 } from './types';
 
 // Sync
@@ -32,7 +31,7 @@ export function fill(payload: Books): BookFillAction {
   };
 }
 
-export function error(payload: ErrorHttpAction): BookErrorAction {
+export function error(payload: string[]): BookErrorAction {
   return {
     type: BOOK_ERROR,
     payload,

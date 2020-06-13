@@ -23,8 +23,6 @@ export type Books = {
   books: Book[];
 };
 
-export type ErrorHttpAction = string[];
-
 // Sync
 export const BOOK_START = 'BOOK_START';
 type BookStartAction = {
@@ -45,7 +43,7 @@ export type BookFillAction = {
 export const BOOK_ERROR = 'BOOK_ERROR';
 export type BookErrorAction = {
   type: typeof BOOK_ERROR;
-  payload: ErrorHttpAction;
+  payload: string[];
 };
 
 // Async

@@ -1,5 +1,3 @@
-import { ErrorHttpAction } from '../domain/book/types';
-
 export type FillActionType<T> = (
     payload: T,
 ) => {
@@ -8,8 +6,8 @@ export type FillActionType<T> = (
 };
 
 export type ErrorActionType = (
-    payload: ErrorHttpAction,
+    payload: string[],
 ) => {
     type: string;
-    payload: ErrorHttpAction;
+    payload: string[];
 };
