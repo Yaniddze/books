@@ -1,0 +1,1 @@
+export { fetchGenres } from './fetchGenres';

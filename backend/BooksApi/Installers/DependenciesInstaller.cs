@@ -33,6 +33,7 @@ namespace BooksApi.Installers
             services.AddTransient<IFindQuery<Book>, FindBookQuery>();
             services.AddTransient<IGetAllQuery<Book>, GetAllBooks>();
             services.AddTransient<IGetAllQuery<Author>, GetAllAuthors>();
+            services.AddTransient<IGetAllQuery<Genre>, GetAllGenres>();
             services.AddTransient<ICommandHandler<AddBookCommand>, AddBookCommandHandler>();
             services.AddTransient<ICommandHandler<DeleteBooksCommand>, DeleteBookCommandHandler>();
             services.AddTransient<ICommandHandler<UpdateBookCommand>, UpdateBookCommandHandler>();

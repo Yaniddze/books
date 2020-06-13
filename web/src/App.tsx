@@ -5,6 +5,7 @@ import { store } from './init/store';
 
 import { Books } from './domain/book';
 import { Authors } from './domain/author';
+import { Genres } from './domain/genre';
 
 export function App(): ReactElement {
   return (
@@ -12,6 +13,7 @@ export function App(): ReactElement {
       <Provider store={store}>
         <Books />
         <Authors />
+        <Genres />
       </Provider>
     </>
   );
