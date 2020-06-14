@@ -42,7 +42,7 @@ export const BookItem: FC<PropTypes> = ({
   );
 
   const cancelButton = (
-    <Button onClick={(): void => { setEditButtonShown(true); }}>Cancel</Button>
+    <Button onClick={(): void => { setEditButtonShown(true); }}>Отмена</Button>
   );
 
   return (

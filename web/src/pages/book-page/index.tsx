@@ -74,12 +74,14 @@ export const BookPage: FC<PropTypes> = () => {
     </Button>
   );
 
-  const books = !bookFetchState.isFetching
+  const successLoaded = !bookFetchState.isFetching
     && !authorsFetchState.isFetching
     && authorsFetchState.data.success
     && !genresFetchState.isFetching
     && genresFetchState.data.success
-    && bookFetchState.data.success
+    && bookFetchState.data.success;
+
+  const books = successLoaded
     && bookFetchState.data.books.map(
       (book: Book) => (
         <BookItem
@@ -91,6 +93,26 @@ export const BookPage: FC<PropTypes> = () => {
           checked={selected.includes(book.id)}
         />
       ),
+    );
+
+  const roundedButton = successLoaded
+    && (
+    <RoundButton onClick={(): void => {
+      setAddedItem(
+        <BookItemAdded
+          authors={authorsFetchState.data.authors}
+          genres={genresFetchState.data.genres}
+          onCancel={(): void => {
+            setAddedItem('');
+          }}
+          onSubmit={(book: BookToAdd): void => {
+            setAddedItem('');
+            addDispatch(book);
+          }}
+        />,
+      );
+    }}
+    />
     );
 
   return (
@@ -111,22 +133,7 @@ export const BookPage: FC<PropTypes> = () => {
         margin: '10px',
       }}
       >
-        <RoundButton onClick={(): void => {
-          setAddedItem(
-            <BookItemAdded
-              authors={authorsFetchState.data.authors}
-              genres={genresFetchState.data.genres}
-              onCancel={(): void => {
-                setAddedItem('');
-              }}
-              onSubmit={(book: BookToAdd): void => {
-                setAddedItem('');
-                addDispatch(book);
-              }}
-            />,
-          );
-        }}
-        />
+        {roundedButton}
       </div>
     </>
   );

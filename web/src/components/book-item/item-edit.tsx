@@ -88,7 +88,7 @@ export const BookItemEdit: FC<PropTypes> = ({
         {genreSelect}
 
         <div>
-          <button className={styles.submitBtn} type="submit">Submit</button>
+          <button className={styles.submitBtn} type="submit">Сохранить</button>
         </div>
       </form>
     </>
