@@ -1,10 +1,10 @@
 .bookItem{
-  margin: 5px;
   border: 1px solid black;
   padding: 5px;
   border-radius: 5px;
   font-family: 'PT Serif', serif;
   transition: 0.5s all ease;
+  margin: 5px;
 }
 
 .bookItemClicked{
@@ -16,4 +16,34 @@
   background: #ff547e;
   color: white;
   cursor: pointer;
+}
+
+
+.error {
+  color: red;
+  margin-left: 5px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 20px;
+}
+
+.editInput {
+  width: calc(100% - 15px);
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid black;
+  margin: 5px 0;
+  font-family: 'PT Serif', serif;
+  font-size: 20px;
+}
+
+.editInputTitle {
+  font-size: 20px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.editSelect {
+  width: 100%;
+  padding: 5px;
+  font-family: 'PT Serif', serif;
+  font-size: 20px;
 }

@@ -1,10 +1,12 @@
 // Types
 import {
-  BOOK_START,
-  BOOK_FETCH_ASYNC,
-  BOOK_FINISH,
-  BOOK_FILL,
   BOOK_ERROR,
+  BOOK_FETCH_ASYNC,
+  BOOK_FILL,
+  BOOK_FINISH,
+  BOOK_START,
+  BOOK_UPDATE_ASYNC,
+  BOOK_UPDATE_SUCCESS,
   BooksActionTypes,
   BookState,
 } from './types';
@@ -51,7 +53,20 @@ export const booksReducer = (
           ...action.payload,
         },
       };
+    case BOOK_UPDATE_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        data: {
+          ...state.data,
+          books: state.data.books.map((book) => (
+            book.id === action.payload.id ? action.payload : book
+          )),
+        },
+      };
     case BOOK_FETCH_ASYNC:
+      return state;
+    case BOOK_UPDATE_ASYNC:
       return state;
     default:
       // eslint-disable-next-line no-case-declarations,@typescript-eslint/no-unused-vars

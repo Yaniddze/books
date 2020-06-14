@@ -7,6 +7,8 @@ import { Button } from '../../components/button';
 
 // Hooks
 import { useBookFetch } from '../../domain/book/hooks/useBookFetch';
+import { useAuthorsFetch } from '../../domain/author/hooks/useAuthorsFetch';
+import { useGenresFetch } from '../../domain/genre/hooks/useGenresFetch';
 
 // Types
 import { Book } from '../../domain/book/types';
@@ -23,17 +25,25 @@ export const BookPage: FC<PropTypes> = () => {
     document.title = 'Книги';
   }, []);
 
-  const { data, isFetching } = useBookFetch();
+  const bookFetchState = useBookFetch();
+  const authorsFetchState = useAuthorsFetch();
+  const genresFetchState = useGenresFetch();
+
   const [selected, setSelected] = useState<string[]>([]);
 
-  const loading = isFetching && <p>Loading...</p>;
-  const errors = !isFetching && !data.success && data.errors.map(
-    (error: string) => (
-      <p key={error}>
-        {error}
-      </p>
-    ),
-  );
+  const loading = authorsFetchState.isFetching
+    && genresFetchState.isFetching
+    && bookFetchState.isFetching
+    && <p>Loading...</p>;
+  const errors = !bookFetchState.isFetching
+    && !bookFetchState.data.success
+    && bookFetchState.data.errors.map(
+      (error: string) => (
+        <p key={error}>
+          {error}
+        </p>
+      ),
+    );
 
   const onItemClick = (id: string): void => {
     setSelected(((prevState: string[]) => {
@@ -48,23 +58,32 @@ export const BookPage: FC<PropTypes> = () => {
   };
 
   const deleteIcon = selected.length > 0 && (
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     <Button onClick={(): void => {
-      console.log('clicked');
+
     }}
     >
       { `Удалить выбранное (${selected.length})` }
     </Button>
   );
 
-  const books = !isFetching && data.success && data.books.map(
-    (book: Book) => (
-      <BookItem
-        key={book.id}
-        book={book}
-        onItemClick={onItemClick}
-      />
-    ),
-  );
+  const books = !bookFetchState.isFetching
+    && !authorsFetchState.isFetching
+    && authorsFetchState.data.success
+    && !genresFetchState.isFetching
+    && genresFetchState.data.success
+    && bookFetchState.data.success
+    && bookFetchState.data.books.map(
+      (book: Book) => (
+        <BookItem
+          key={book.id}
+          book={book}
+          onItemClick={onItemClick}
+          authors={authorsFetchState.data.authors}
+          genres={genresFetchState.data.genres}
+        />
+      ),
+    );
 
   return (
     <>
@@ -75,6 +94,17 @@ export const BookPage: FC<PropTypes> = () => {
         <div className={styles.bookItemsContainer}>
           {books}
         </div>
+      </div>
+      <div style={{
+        position: 'fixed',
+        bottom: 0,
+        right: 0,
+        margin: '10px',
+      }}
+      >
+        <button style={{ padding: '5px', borderRadius: '50%' }} type="submit">
+          +
+        </button>
       </div>
     </>
   );

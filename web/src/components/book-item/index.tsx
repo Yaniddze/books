@@ -5,57 +5,71 @@ import React, { FC, useState } from 'react';
 import { Book } from '../../domain/book/types';
 
 // Styles
-import styles from './styles.module.scss';
+// import styles from './styles.module.scss';
+
+// Components
+import { Button } from '../button';
+import { BookItemEdit } from './item-edit';
+import { BookItemShow } from './item-show';
+import { Author } from '../../domain/author/types';
+import { Genre } from '../../domain/genre/types';
+import { useBookUpdate } from '../../domain/book/hooks/useBookUpdate';
 
 type PropTypes = {
   children?: never;
   book: Book;
   onItemClick: (id: string) => void;
+  authors: Author[];
+  genres: Genre[];
 }
 
-export const BookItem: FC<PropTypes> = ({ book, onItemClick }: PropTypes) => {
-  const [clicked, setClicked] = useState(false);
+export const BookItem: FC<PropTypes> = ({
+  book, onItemClick, authors, genres,
+}: PropTypes) => {
+  const [editButtonShown, setEditButtonShown] = useState(true);
 
-  return (
-    // eslint-disable-next-line max-len
-    // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
-    <div
-      className={`${styles.bookItem} ${clicked ? styles.bookItemClicked : ''}`}
+  const { dispatch } = useBookUpdate();
+
+  const editButton = (
+    <Button
       onClick={(): void => {
-        setClicked((prevState: boolean) => !prevState);
-        onItemClick(book.id);
+        setEditButtonShown(false);
       }}
     >
+      Изменить
+    </Button>
+  );
+
+  const cancelButton = (
+    <Button onClick={(): void => { setEditButtonShown(true); }}>Cancel</Button>
+  );
+
+  return (
+    <div style={{ marginTop: '10px' }}>
       <div>
-        <b>
-          id:
-        </b>
-        { ` ${book.id}` }
+        { editButtonShown ? editButton : cancelButton }
       </div>
-      <div>
-        <b>
-          Название:
-        </b>
-        { ` ${book.bookInfo.title}` }
-      </div>
-      <div>
-        <b>
-          Год:
-        </b>
-        { ` ${book.bookInfo.year}` }
-      </div>
-      <div>
-        <b>
-          Автор:
-        </b>
-        { ` ${book.author.name}` }
-      </div>
-      <div>
-        <b>
-          Жанр:
-        </b>
-        { ` ${book.genre.title}` }
-      </div>
+      { editButtonShown
+        ? <BookItemShow book={book} onItemClick={onItemClick} />
+        : (
+          <BookItemEdit
+            onSubmit={(values): void => {
+              setEditButtonShown(true);
+              dispatch({
+                bookId: values.id,
+                newGenreId: values.genreId,
+                newAuthorId: values.authorId,
+                newYear: Number(values.year),
+                newTitle: values.title,
+                newGenreTitle: genres.find((x) => x.id === values.genreId)?.title || '',
+                newAuthorName: authors.find((x) => x.id === values.authorId)?.name || '',
+              });
+            }}
+            book={book}
+            authors={authors}
+            genres={genres}
+          />
+        )}
     </div>
   );
 };
