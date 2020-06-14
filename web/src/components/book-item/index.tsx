@@ -4,9 +4,6 @@ import React, { FC, useState } from 'react';
 // Types
 import { Book } from '../../domain/book/types';
 
-// Styles
-// import styles from './styles.module.scss';
-
 // Components
 import { Button } from '../button';
 import { BookItemEdit } from './item-edit';
@@ -27,6 +24,7 @@ export const BookItem: FC<PropTypes> = ({
   book, onItemClick, authors, genres,
 }: PropTypes) => {
   const [editButtonShown, setEditButtonShown] = useState(true);
+  const [clicked, setClicked] = useState(false);
 
   const { dispatch } = useBookUpdate();
 
@@ -34,6 +32,10 @@ export const BookItem: FC<PropTypes> = ({
     <Button
       onClick={(): void => {
         setEditButtonShown(false);
+        if (clicked) {
+          onItemClick(book.id);
+        }
+        setClicked(false);
       }}
     >
       Изменить
@@ -45,12 +47,21 @@ export const BookItem: FC<PropTypes> = ({
   );
 
   return (
-    <div style={{ marginTop: '10px' }}>
+    <div style={{ margin: '10px' }}>
       <div>
         { editButtonShown ? editButton : cancelButton }
       </div>
       { editButtonShown
-        ? <BookItemShow book={book} onItemClick={onItemClick} />
+        ? (
+          <BookItemShow
+            book={book}
+            clicked={clicked}
+            onItemClick={(): void => {
+              setClicked((prevState) => !prevState);
+              onItemClick(book.id);
+            }}
+          />
+        )
         : (
           <BookItemEdit
             onSubmit={(values): void => {

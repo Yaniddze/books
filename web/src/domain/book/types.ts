@@ -22,6 +22,15 @@ export type BookToUpdate = {
   newGenreId: string;
 }
 
+export type BookToAdd = {
+  bookTitle: string;
+  year: number;
+  authorId: string;
+  authorName: string;
+  genreId: string;
+  genreTitle: string;
+}
+
 export type BookState = {
   data: Books;
   isFetching: boolean;
@@ -30,6 +39,12 @@ export type BookState = {
 export type BookUpdateState = {
   success: boolean;
   errors: string[];
+}
+
+export type BookAddState = {
+  success: boolean;
+  errors: string[];
+  bookId: string;
 }
 
 export type Books = {
@@ -67,6 +82,12 @@ export type BookUpdateSuccessAction = {
   payload: Book;
 }
 
+export const BOOK_ADDED_SUCCESS = 'BOOK_ADDED_SUCCESS';
+export type BookAddedSuccessAction = {
+  type: typeof BOOK_ADDED_SUCCESS;
+  payload: Book;
+}
+
 // Async
 export const BOOK_FETCH_ASYNC = 'BOOK_FETCH_ASYNC';
 type BookFetchAsyncAction = {
@@ -79,6 +100,12 @@ export type BookUpdateAsyncAction = {
   payload: BookToUpdate;
 };
 
+export const BOOK_ADD_ASYNC = 'BOOK_ADD_ASYNC';
+export type BookAddAsyncAction = {
+  type: typeof BOOK_ADD_ASYNC;
+  payload: BookToAdd;
+}
+
 export type BooksActionTypes =
   | BookStartAction
   | BookFinishAction
@@ -86,4 +113,6 @@ export type BooksActionTypes =
   | BookErrorAction
   | BookUpdateSuccessAction
   | BookFetchAsyncAction
-  | BookUpdateAsyncAction;
+  | BookUpdateAsyncAction
+  | BookAddedSuccessAction
+  | BookAddAsyncAction;

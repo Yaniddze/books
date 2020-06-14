@@ -3,15 +3,17 @@ import React, { FC, useEffect, useState } from 'react';
 
 // Components
 import { BookItem } from '../../components/book-item';
-import { Button } from '../../components/button';
+import { Button, RoundButton } from '../../components/button';
+import { BookItemAdded } from '../../components/book-item/item-added';
 
 // Hooks
 import { useBookFetch } from '../../domain/book/hooks/useBookFetch';
 import { useAuthorsFetch } from '../../domain/author/hooks/useAuthorsFetch';
 import { useGenresFetch } from '../../domain/genre/hooks/useGenresFetch';
+import { useBookAdd } from '../../domain/book/hooks/useBookAdd';
 
 // Types
-import { Book } from '../../domain/book/types';
+import { Book, BookToAdd } from '../../domain/book/types';
 
 // Styles
 import styles from './styles.module.scss';
@@ -25,11 +27,14 @@ export const BookPage: FC<PropTypes> = () => {
     document.title = 'Книги';
   }, []);
 
+  const dispatch = useBookAdd();
+
   const bookFetchState = useBookFetch();
   const authorsFetchState = useAuthorsFetch();
   const genresFetchState = useGenresFetch();
 
   const [selected, setSelected] = useState<string[]>([]);
+  const [addedItem, setAddedItem] = useState();
 
   const loading = authorsFetchState.isFetching
     && genresFetchState.isFetching
@@ -93,6 +98,7 @@ export const BookPage: FC<PropTypes> = () => {
       <div style={{ display: 'flex' }}>
         <div className={styles.bookItemsContainer}>
           {books}
+          {addedItem}
         </div>
       </div>
       <div style={{
@@ -102,9 +108,22 @@ export const BookPage: FC<PropTypes> = () => {
         margin: '10px',
       }}
       >
-        <button style={{ padding: '5px', borderRadius: '50%' }} type="submit">
-          +
-        </button>
+        <RoundButton onClick={(): void => {
+          setAddedItem(
+            <BookItemAdded
+              authors={authorsFetchState.data.authors}
+              genres={genresFetchState.data.genres}
+              onCancel={(): void => {
+                setAddedItem('');
+              }}
+              onSubmit={(book: BookToAdd): void => {
+                setAddedItem('');
+                dispatch(book);
+              }}
+            />,
+          );
+        }}
+        />
       </div>
     </>
   );

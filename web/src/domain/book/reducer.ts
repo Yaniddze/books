@@ -1,5 +1,7 @@
 // Types
 import {
+  BOOK_ADD_ASYNC,
+  BOOK_ADDED_SUCCESS,
   BOOK_ERROR,
   BOOK_FETCH_ASYNC,
   BOOK_FILL,
@@ -64,9 +66,19 @@ export const booksReducer = (
           )),
         },
       };
+    case BOOK_ADDED_SUCCESS:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          books: [...state.data.books, action.payload],
+        },
+      };
     case BOOK_FETCH_ASYNC:
       return state;
     case BOOK_UPDATE_ASYNC:
+      return state;
+    case BOOK_ADD_ASYNC:
       return state;
     default:
       // eslint-disable-next-line no-case-declarations,@typescript-eslint/no-unused-vars

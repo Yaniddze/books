@@ -34,8 +34,9 @@ export function* makeRequest(body: BookToUpdate): SagaIterator {
         },
       }));
     }
-    // eslint-disable-next-line no-empty
-  } catch (e) { }
+  } catch (e) {
+    // TODO create handle
+  }
 }
 
 export function* updateBook(action: BookUpdateAsyncAction): Generator {

@@ -12,13 +12,23 @@ import styles from './styles.module.scss';
 type PropTypes = {
   children?: never;
   book: Book;
-  onItemClick: (id: string) => void;
+  onItemClick: () => void;
+  clicked: boolean;
 }
 
-export const BookItemShow: FC<PropTypes> = ({ book }: PropTypes) => (
-  <div style={{ marginTop: '10px' }}>
+export const BookItemShow: FC<PropTypes> = ({ book, onItemClick, clicked }: PropTypes) => (
+  <div
+    style={{ marginTop: '10px' }}
+    onClick={((event): void => {
+      event.preventDefault();
+      onItemClick();
+    })}
+    role="button"
+    tabIndex={0}
+    onKeyDown={(event): void => event.preventDefault()}
+  >
     <div
-      className={`${styles.bookItem}`}
+      className={`${styles.bookItem} ${clicked && styles.bookItemClicked}`}
     >
       <div>
         <b>

@@ -7,9 +7,6 @@ import { Book } from '../../domain/book/types';
 import { Author } from '../../domain/author/types';
 import { Genre } from '../../domain/genre/types';
 
-// Components
-// import { Button } from '../button';
-
 // Styles
 import styles from './styles.module.scss';
 
@@ -63,6 +60,8 @@ export const BookItemEdit: FC<PropTypes> = ({
           defaultValue={book.bookInfo.title}
           ref={register({
             required: 'Required',
+            maxLength: 30,
+            minLength: 5,
           })}
         />
 
@@ -76,7 +75,7 @@ export const BookItemEdit: FC<PropTypes> = ({
           ref={register({
             required: 'Required',
             min: 0,
-            max: 2020,
+            max: new Date().getFullYear(),
           })}
         />
 
@@ -89,7 +88,7 @@ export const BookItemEdit: FC<PropTypes> = ({
         {genreSelect}
 
         <div>
-          <button type="submit">Submit</button>
+          <button className={styles.submitBtn} type="submit">Submit</button>
         </div>
       </form>
     </>

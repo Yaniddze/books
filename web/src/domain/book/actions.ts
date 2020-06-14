@@ -1,19 +1,25 @@
 // Types
 import {
   Book,
+  BOOK_ADD_ASYNC,
+  BOOK_ADDED_SUCCESS,
   BOOK_ERROR,
   BOOK_FETCH_ASYNC,
   BOOK_FILL,
   BOOK_FINISH,
-  BOOK_START, BOOK_UPDATE_ASYNC,
+  BOOK_START,
+  BOOK_UPDATE_ASYNC,
   BOOK_UPDATE_SUCCESS,
+  BookAddAsyncAction,
+  BookAddedSuccessAction,
   BookErrorAction,
   BookFillAction,
   Books,
   BooksActionTypes,
-  BookUpdateSuccessAction,
-  BookUpdateAsyncAction,
+  BookToAdd,
   BookToUpdate,
+  BookUpdateAsyncAction,
+  BookUpdateSuccessAction,
 } from './types';
 
 // Sync
@@ -50,6 +56,13 @@ export function bookUpdateSuccess(payload: Book): BookUpdateSuccessAction {
   };
 }
 
+export function bookAddSuccess(payload: Book): BookAddedSuccessAction {
+  return {
+    type: BOOK_ADDED_SUCCESS,
+    payload,
+  };
+}
+
 // Async
 export function fetchAsync(): BooksActionTypes {
   return {
@@ -60,6 +73,13 @@ export function fetchAsync(): BooksActionTypes {
 export function updateAsync(payload: BookToUpdate): BookUpdateAsyncAction {
   return {
     type: BOOK_UPDATE_ASYNC,
+    payload,
+  };
+}
+
+export function addAsync(payload: BookToAdd): BookAddAsyncAction {
+  return {
+    type: BOOK_ADD_ASYNC,
     payload,
   };
 }

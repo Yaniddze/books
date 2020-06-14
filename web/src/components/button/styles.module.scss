@@ -7,12 +7,29 @@
   margin: 10px;
   font-size: 20px;
   transition: 0.5s all ease;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &:active {
+    background: #c14461;
+  }
 }
 
-.myBtn:hover{
-  cursor: pointer;
-}
+.myRoundBtn {
+  border-radius: 50%;
+  background: #ff547e;
+  width: 70px;
+  height: 70px;
+  border: none;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 50px;
 
-.myBtn:active{
-  background: #c14461;
+  &:active {
+    background: #c14461;
+  }
 }
