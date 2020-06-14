@@ -9,6 +9,8 @@ import {
   BOOK_START,
   BOOK_UPDATE_ASYNC,
   BOOK_UPDATE_SUCCESS,
+  BOOKS_DELETE_ASYNC,
+  BOOKS_DELETED_SUCCESS,
   BooksActionTypes,
   BookState,
 } from './types';
@@ -74,11 +76,21 @@ export const booksReducer = (
           books: [...state.data.books, action.payload],
         },
       };
+    case BOOKS_DELETED_SUCCESS:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          books: state.data.books.filter((x) => !action.payload.includes(x.id)),
+        },
+      };
     case BOOK_FETCH_ASYNC:
       return state;
     case BOOK_UPDATE_ASYNC:
       return state;
     case BOOK_ADD_ASYNC:
+      return state;
+    case BOOKS_DELETE_ASYNC:
       return state;
     default:
       // eslint-disable-next-line no-case-declarations,@typescript-eslint/no-unused-vars

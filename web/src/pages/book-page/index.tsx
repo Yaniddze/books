@@ -11,6 +11,7 @@ import { useBookFetch } from '../../domain/book/hooks/useBookFetch';
 import { useAuthorsFetch } from '../../domain/author/hooks/useAuthorsFetch';
 import { useGenresFetch } from '../../domain/genre/hooks/useGenresFetch';
 import { useBookAdd } from '../../domain/book/hooks/useBookAdd';
+import { useBooksDelete } from '../../domain/book/hooks/useBooksDelete';
 
 // Types
 import { Book, BookToAdd } from '../../domain/book/types';
@@ -27,7 +28,8 @@ export const BookPage: FC<PropTypes> = () => {
     document.title = 'Книги';
   }, []);
 
-  const dispatch = useBookAdd();
+  const addDispatch = useBookAdd();
+  const deleteDispatch = useBooksDelete();
 
   const bookFetchState = useBookFetch();
   const authorsFetchState = useAuthorsFetch();
@@ -63,9 +65,9 @@ export const BookPage: FC<PropTypes> = () => {
   };
 
   const deleteIcon = selected.length > 0 && (
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     <Button onClick={(): void => {
-
+      deleteDispatch(selected);
+      setSelected([]);
     }}
     >
       { `Удалить выбранное (${selected.length})` }
@@ -86,6 +88,7 @@ export const BookPage: FC<PropTypes> = () => {
           onItemClick={onItemClick}
           authors={authorsFetchState.data.authors}
           genres={genresFetchState.data.genres}
+          checked={selected.includes(book.id)}
         />
       ),
     );
@@ -118,7 +121,7 @@ export const BookPage: FC<PropTypes> = () => {
               }}
               onSubmit={(book: BookToAdd): void => {
                 setAddedItem('');
-                dispatch(book);
+                addDispatch(book);
               }}
             />,
           );

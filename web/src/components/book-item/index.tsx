@@ -18,13 +18,13 @@ type PropTypes = {
   onItemClick: (id: string) => void;
   authors: Author[];
   genres: Genre[];
+  checked: boolean;
 }
 
 export const BookItem: FC<PropTypes> = ({
-  book, onItemClick, authors, genres,
+  book, onItemClick, authors, genres, checked,
 }: PropTypes) => {
   const [editButtonShown, setEditButtonShown] = useState(true);
-  const [clicked, setClicked] = useState(false);
 
   const { dispatch } = useBookUpdate();
 
@@ -32,10 +32,9 @@ export const BookItem: FC<PropTypes> = ({
     <Button
       onClick={(): void => {
         setEditButtonShown(false);
-        if (clicked) {
+        if (checked) {
           onItemClick(book.id);
         }
-        setClicked(false);
       }}
     >
       Изменить
@@ -55,9 +54,8 @@ export const BookItem: FC<PropTypes> = ({
         ? (
           <BookItemShow
             book={book}
-            clicked={clicked}
+            clicked={checked}
             onItemClick={(): void => {
-              setClicked((prevState) => !prevState);
               onItemClick(book.id);
             }}
           />

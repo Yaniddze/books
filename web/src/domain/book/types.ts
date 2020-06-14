@@ -47,6 +47,11 @@ export type BookAddState = {
   bookId: string;
 }
 
+export type BookDeleteState = {
+  success: boolean;
+  errors: string[];
+}
+
 export type Books = {
   success: boolean;
   errors: string[];
@@ -88,6 +93,12 @@ export type BookAddedSuccessAction = {
   payload: Book;
 }
 
+export const BOOKS_DELETED_SUCCESS = 'BOOKS_DELETED_SUCCESS';
+export type BooksDeletedSuccessAction = {
+  type: typeof BOOKS_DELETED_SUCCESS;
+  payload: string[];
+}
+
 // Async
 export const BOOK_FETCH_ASYNC = 'BOOK_FETCH_ASYNC';
 type BookFetchAsyncAction = {
@@ -106,6 +117,12 @@ export type BookAddAsyncAction = {
   payload: BookToAdd;
 }
 
+export const BOOKS_DELETE_ASYNC = 'BOOKS_DELETE_ASYNC';
+export type BooksDeleteAsyncAction = {
+  type: typeof BOOKS_DELETE_ASYNC;
+  payload: string[];
+}
+
 export type BooksActionTypes =
   | BookStartAction
   | BookFinishAction
@@ -115,4 +132,6 @@ export type BooksActionTypes =
   | BookFetchAsyncAction
   | BookUpdateAsyncAction
   | BookAddedSuccessAction
-  | BookAddAsyncAction;
+  | BookAddAsyncAction
+  | BooksDeletedSuccessAction
+  | BooksDeleteAsyncAction;

@@ -15,7 +15,11 @@ import {
   BookErrorAction,
   BookFillAction,
   Books,
+  BOOKS_DELETE_ASYNC,
+  BOOKS_DELETED_SUCCESS,
   BooksActionTypes,
+  BooksDeleteAsyncAction,
+  BooksDeletedSuccessAction,
   BookToAdd,
   BookToUpdate,
   BookUpdateAsyncAction,
@@ -63,6 +67,13 @@ export function bookAddSuccess(payload: Book): BookAddedSuccessAction {
   };
 }
 
+export function booksDeleteSuccess(payload: string[]): BooksDeletedSuccessAction {
+  return {
+    type: BOOKS_DELETED_SUCCESS,
+    payload,
+  };
+}
+
 // Async
 export function fetchAsync(): BooksActionTypes {
   return {
@@ -80,6 +91,13 @@ export function updateAsync(payload: BookToUpdate): BookUpdateAsyncAction {
 export function addAsync(payload: BookToAdd): BookAddAsyncAction {
   return {
     type: BOOK_ADD_ASYNC,
+    payload,
+  };
+}
+
+export function deleteAsync(payload: string[]): BooksDeleteAsyncAction {
+  return {
+    type: BOOKS_DELETE_ASYNC,
     payload,
   };
 }

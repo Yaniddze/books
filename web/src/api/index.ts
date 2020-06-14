@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { root } from './config';
 import {
-  Books, BookUpdateState, BookToUpdate, BookToAdd, BookAddState,
+  Books, BookUpdateState, BookToUpdate, BookToAdd, BookAddState, BookDeleteState,
 } from '../domain/book/types';
 import { Authors } from '../domain/author/types';
 import { Genres } from '../domain/genre/types';
@@ -13,6 +13,7 @@ type APIFetchDataType = {
     fetch: FetchDataType<Books>;
     update: (book: BookToUpdate) => Promise<BookUpdateState>;
     add: (book: BookToAdd) => Promise<BookAddState>;
+    delete: (ids: string[]) => Promise<BookDeleteState>;
   };
   authors: {
     fetch: FetchDataType<Authors>;
@@ -30,6 +31,9 @@ export const api: APIFetchDataType = {
       .then((result) => result.data as BookUpdateState),
     add: (book: BookToAdd): Promise<BookAddState> => axios.put(`${root}/book/add`, book)
       .then((result) => result.data as BookAddState),
+    delete: (ids: string[]): Promise<BookDeleteState> => axios.delete(`${root}/book/delete`,
+      { data: { bookIds: ids } })
+      .then((result) => result.data as BookDeleteState),
   },
   authors: {
     fetch: (): Promise<Authors> => axios.get(`${root}/author/all`)
