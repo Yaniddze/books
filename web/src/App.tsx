@@ -1,6 +1,12 @@
 // Core
 import React, { ReactElement } from 'react';
 import { Provider } from 'react-redux';
+import {
+  BrowserRouter,
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom';
 
 // Styles
 import './styles.module.scss';
@@ -8,10 +14,8 @@ import './styles.module.scss';
 // Store
 import { store } from './init/store';
 
-// Domain
-import { Books } from './domain/book';
-import { Authors } from './domain/author';
-import { Genres } from './domain/genre';
+// Pages
+import { BookPage } from './pages/book-page';
 
 // Components
 import { Header } from './components/header';
@@ -23,9 +27,16 @@ export function App(): ReactElement {
         <Header>
           Библиотека
         </Header>
-        <Books />
-        <Authors />
-        <Genres />
+
+        <BrowserRouter>
+          <Switch>
+            <Route path="/books" title="Книги">
+              <BookPage />
+            </Route>
+            <Redirect to="/books" />
+          </Switch>
+        </BrowserRouter>
+
       </Provider>
     </>
   );

@@ -1,0 +1,19 @@
+.bookItem{
+  margin: 5px;
+  border: 1px solid black;
+  padding: 5px;
+  border-radius: 5px;
+  font-family: 'PT Serif', serif;
+  transition: 0.5s all ease;
+}
+
+.bookItemClicked{
+  background: #ff547e;
+  color: white;
+}
+
+.bookItem:hover{
+  background: #ff547e;
+  color: white;
+  cursor: pointer;
+}

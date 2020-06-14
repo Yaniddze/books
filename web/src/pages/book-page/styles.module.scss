@@ -1,0 +1,33 @@
+.bookItemsContainer{
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.bookItemsContainer > div {
+  width: 100%;
+}
+
+
+@media (min-width: 350px) {
+  .bookItemsContainer {
+    width: 350px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .bookItemsContainer > div {
+    width: 350px;
+  }
+}
+
+@media (min-width: 780px) {
+  .bookItemsContainer{
+    width: 745px;
+  }
+}
+
+@media (min-width: 1210px) {
+  .bookItemsContainer {
+    width: 1120px;
+  }
+}
