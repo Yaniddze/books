@@ -8,6 +8,8 @@ namespace BooksApi.UseCases.Register
         {
             RuleFor(x => x.Login)
                 .NotNull()
+                .Matches(@"^[a-zA-Z0-9]+$")
+                    .WithMessage("Login contains special characters")
                 .MinimumLength(4)
                 .MaximumLength(50);
 

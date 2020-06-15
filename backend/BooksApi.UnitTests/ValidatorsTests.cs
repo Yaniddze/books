@@ -1,9 +1,12 @@
 using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 using BooksApi.UseCases.AddBook;
 using BooksApi.UseCases.DeleteBooks;
+using BooksApi.UseCases.Login;
+using BooksApi.UseCases.Register;
 using BooksApi.UseCases.UpdateBook;
 
 namespace BooksApi.UnitTests
@@ -243,6 +246,68 @@ namespace BooksApi.UnitTests
 
             var validationResult = await validator.ValidateAsync(request);
             
+            Assert.False(validationResult.IsValid);
+        }
+        
+        // Validate login request success
+        [Theory]
+        [InlineData("someLogin", "somePass")]
+        public async Task login_validate_success(string login, string password)
+        {
+            var request = new LoginRequest {Login = login, Password = password};
+            
+            var validator = new LoginRequestValidator();
+
+            var validationResult = await validator.ValidateAsync(request, CancellationToken.None);
+
+            Assert.True(validationResult.IsValid);
+        }
+        
+        // Validate login request failed
+        [Theory]
+        [InlineData("s", "somePass")]
+        [InlineData("someLogin", "s")]
+        public async Task login_validate_failed(string login, string password)
+        {
+            var request = new LoginRequest {Login = login, Password = password};
+            
+            var validator = new LoginRequestValidator();
+
+            var validationResult = await validator.ValidateAsync(request, CancellationToken.None);
+
+            Assert.False(validationResult.IsValid);
+        }
+        
+        // Validate register request success
+        [Theory]
+        [InlineData("ssssss", "somePass")]
+        [InlineData("someLogin", "ssssss")]
+        public async Task register_validate_success(string login, string password)
+        {
+            var request = new RegisterRequest {Login = login, Password = password};
+            
+            var validator = new RegisterRequestValidator();
+
+            var validationResult = await validator.ValidateAsync(request, CancellationToken.None);
+
+            Assert.True(validationResult.IsValid);
+        }
+        
+        // Validate register request failed
+        [Theory]
+        [InlineData("s", "somePass")]
+        [InlineData("someLogin", "s")]
+        [InlineData("some-login", "ssssss")]
+        [InlineData("some login", "ssssss")]
+        [InlineData("some_login", "ssssss")]
+        public async Task register_validate_failed(string login, string password)
+        {
+            var request = new RegisterRequest {Login = login, Password = password};
+            
+            var validator = new RegisterRequestValidator();
+
+            var validationResult = await validator.ValidateAsync(request, CancellationToken.None);
+
             Assert.False(validationResult.IsValid);
         }
     }
