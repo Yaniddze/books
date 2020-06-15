@@ -5,9 +5,11 @@ using BooksApi.DataBase.Context;
 using BooksApi.DataBase.CQRS.AuthorImpl;
 using BooksApi.DataBase.CQRS.BookImpl;
 using BooksApi.DataBase.CQRS.GenreImpl;
+using BooksApi.DataBase.CQRS.UserImpl;
 using BooksApi.Entities;
 using BooksApi.UseCases.AddBook;
 using BooksApi.UseCases.DeleteBooks;
+using BooksApi.UseCases.Login;
 using BooksApi.UseCases.UpdateBook;
 using FluentValidation;
 using Microsoft.Extensions.Configuration;
@@ -23,6 +25,7 @@ namespace BooksApi.Installers
             services.AddTransient<IValidator<AddBookRequest>, AddBookRequestValidator>();
             services.AddTransient<IValidator<DeleteBooksRequest>, DeleteBookRequestValidator>();
             services.AddTransient<IValidator<UpdateBookRequest>, UpdateBookRequestValidator>();
+            services.AddTransient<IValidator<LoginRequest>, LoginRequestValidator>();
             
             // Entity context provider
             services.AddSingleton(new ContextProvider());
@@ -31,12 +34,14 @@ namespace BooksApi.Installers
             services.AddTransient<IFindQuery<Author>, FindAuthorQuery>();
             services.AddTransient<IFindQuery<Genre>, FindGenreQuery>();
             services.AddTransient<IFindQuery<Book>, FindBookQuery>();
+            services.AddTransient<IFindQuery<User>, FindUserQuery>();
             services.AddTransient<IGetAllQuery<Book>, GetAllBooks>();
             services.AddTransient<IGetAllQuery<Author>, GetAllAuthors>();
             services.AddTransient<IGetAllQuery<Genre>, GetAllGenres>();
             services.AddTransient<ICommandHandler<AddBookCommand>, AddBookCommandHandler>();
             services.AddTransient<ICommandHandler<DeleteBooksCommand>, DeleteBookCommandHandler>();
             services.AddTransient<ICommandHandler<UpdateBookCommand>, UpdateBookCommandHandler>();
+            services.AddTransient<ICommandHandler<AddUserCommand>, AddUserCommandHandler>();
         }
     }
 }
