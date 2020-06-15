@@ -9,6 +9,7 @@ namespace BooksApi.DataBase.Context
         public DbSet<AuthorDB> Authors { get; set; }
         public DbSet<GenreDB> Genres { get; set; }
         public DbSet<BookDB> Books { get; set; }
+        public DbSet<UserDB> Users { get; set; }
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -32,6 +33,10 @@ namespace BooksApi.DataBase.Context
 
             modelBuilder.Entity<AuthorDB>()
                 .ToTable("author")
+                .HasKey(x => x.Id);
+
+            modelBuilder.Entity<UserDB>()
+                .ToTable("users")
                 .HasKey(x => x.Id);
             
             // Foreign keys
@@ -81,6 +86,18 @@ namespace BooksApi.DataBase.Context
             modelBuilder.Entity<GenreDB>()
                 .Property(x => x.Title)
                 .HasColumnName("title");
+
+            modelBuilder.Entity<UserDB>()
+                .Property(x => x.Id)
+                .HasColumnName("id");
+            
+            modelBuilder.Entity<UserDB>()
+                .Property(x => x.Login)
+                .HasColumnName("login");
+            
+            modelBuilder.Entity<UserDB>()
+                .Property(x => x.Password)
+                .HasColumnName("password");
         }
     }
 }

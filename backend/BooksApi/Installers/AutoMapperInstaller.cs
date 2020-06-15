@@ -147,6 +147,34 @@ namespace BooksApi.Installers
                         map => map.MapFrom(
                             dest => dest.NewYear
                         ));
+
+                options.CreateMap<User, UserDB>()
+                    .ForMember(x => x.Id,
+                        map => map.MapFrom(
+                            dest => dest.Id
+                        ))
+                    .ForMember(x => x.Login,
+                        map => map.MapFrom(
+                            dest => dest.LoginInfo.Login
+                        ))
+                    .ForMember(x => x.Password,
+                        map => map.MapFrom(
+                            dest => dest.LoginInfo.Password
+                        ));
+
+                options.CreateMap<UserDB, User>()
+                    .ForMember(x => x.Id,
+                        map => map.MapFrom(
+                            dest => dest.Id
+                        ))
+                    .ForMember(x => x.LoginInfo,
+                        map => map.MapFrom(
+                            dest => new LoginInfo
+                            {
+                                Login = dest.Login, 
+                                Password = dest.Password,
+                            }
+                        ));
             }, typeof(Startup));
         }
     }
