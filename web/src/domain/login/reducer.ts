@@ -1,16 +1,16 @@
 // Core
 import Cookies from 'js-cookie';
-
 // Types
 import {
-  LOGIN_START,
-  LOGIN_FINISH,
-  LOGIN_SUCCESS,
-  LOGIN_ERROR,
   LOGIN_ASYNC,
+  LOGIN_CLEAN,
+  LOGIN_ERROR,
+  LOGIN_FINISH,
+  LOGIN_START,
   LOGOUT,
-  LoginState,
+  LOGIN_SUCCESS,
   LoginActions,
+  LoginState,
 } from './types';
 
 const initialState: LoginState = {
@@ -69,6 +69,14 @@ export function loginReducer(state = initialState, action: LoginActions): LoginS
         data: {
           ...state.data,
           token: '',
+        },
+      };
+    case LOGIN_CLEAN:
+      return {
+        ...initialState,
+        data: {
+          ...initialState.data,
+          token: state.data.token,
         },
       };
     case LOGIN_ASYNC:

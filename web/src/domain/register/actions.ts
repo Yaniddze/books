@@ -1,12 +1,13 @@
 import {
   REGISTER_ASYNC,
-  REGISTER_SUCCESS,
+  REGISTER_CLEAN,
+  REGISTER_ERROR,
   REGISTER_FINISH,
   REGISTER_START,
-  REGISTER_ERROR,
+  REGISTER_SUCCESS,
   RegisterActions,
-  RegisterErrorAction,
   RegisterAsyncAction,
+  RegisterErrorAction,
   RegisterInfo,
 } from './types';
 
@@ -32,6 +33,12 @@ export function error(payload: string[]): RegisterErrorAction {
   return {
     type: REGISTER_ERROR,
     payload,
+  };
+}
+
+export function clean(): RegisterActions {
+  return {
+    type: REGISTER_CLEAN,
   };
 }
 

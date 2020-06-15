@@ -4,6 +4,7 @@ import {
   REGISTER_START,
   REGISTER_FINISH,
   REGISTER_ASYNC,
+  REGISTER_CLEAN,
   RegisterState,
   RegisterActions,
 } from './types';
@@ -41,6 +42,8 @@ export function registerReducer(state = initialState, action: RegisterActions): 
           errors: action.payload,
         },
       };
+    case REGISTER_CLEAN:
+      return initialState;
     case REGISTER_ASYNC:
       return state;
     case REGISTER_SUCCESS:

@@ -38,6 +38,11 @@ export type RegisterErrorAction = {
   payload: string[]; // Errors
 }
 
+export const REGISTER_CLEAN = 'REGISTER_CLEAN';
+export type RegisterCleanAction = {
+  type: typeof REGISTER_CLEAN;
+}
+
 export const REGISTER_ASYNC = 'REGISTER_ASYNC';
 export type RegisterAsyncAction = {
   type: typeof REGISTER_ASYNC;
@@ -50,3 +55,4 @@ export type RegisterActions =
   | RegisterErrorAction
   | RegisterSuccessAction
   | RegisterFinishAction
+  | RegisterCleanAction;

@@ -1,15 +1,16 @@
 import {
-  LOGIN_START,
   LOGIN_ASYNC,
+  LOGIN_CLEAN,
   LOGIN_ERROR,
-  LOGIN_SUCCESS,
   LOGIN_FINISH,
+  LOGIN_START,
+  LOGIN_SUCCESS,
   LOGOUT,
   LoginActions,
-  LoginErrorAction,
-  LoginSuccessAction,
   LoginAsyncAction,
+  LoginErrorAction,
   LoginInfo,
+  LoginSuccessAction,
 } from './types';
 
 export function start(): LoginActions {
@@ -41,6 +42,12 @@ export function success(payload: string): LoginSuccessAction {
 export function logout(): LoginActions {
   return {
     type: LOGOUT,
+  };
+}
+
+export function clean(): LoginActions {
+  return {
+    type: LOGIN_CLEAN,
   };
 }
 

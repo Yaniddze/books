@@ -36,6 +36,11 @@ export type LoginErrorAction = {
   payload: string[]; // Errors
 }
 
+export const LOGIN_CLEAN = 'LOGIN_CLEAN';
+export type LoginCleanAction = {
+  type: typeof LOGIN_CLEAN;
+}
+
 export const LOGOUT = 'LOGOUT';
 export type LogoutAction = {
   type: typeof LOGOUT;
@@ -53,4 +58,5 @@ export type LoginActions =
   | LoginSuccessAction
   | LoginErrorAction
   | LoginAsyncAction
-  | LogoutAction;
+  | LogoutAction
+  | LoginCleanAction;
