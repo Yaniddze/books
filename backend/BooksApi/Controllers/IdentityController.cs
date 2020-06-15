@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using BooksApi.Controllers.Responses;
 using BooksApi.UseCases.GenerateToken;
 using BooksApi.UseCases.Login;
+using BooksApi.UseCases.Register;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,6 +31,25 @@ namespace BooksApi.Controllers
             if (!loginResult.Success) return Ok(response);
             
             var tokenAnswer = await _mediator.Send(new GenerateTokenRequest {UserId = loginResult.UserId});
+
+            response.Token = tokenAnswer.Token;
+
+            return Ok(response);
+        }
+
+        [HttpPost("register")]
+        public async Task<IActionResult> RegisterAsync([FromBody] RegisterRequest request)
+        {
+            var registerResult = await _mediator.Send(request);
+            var response = new RegisterResponse
+            {
+                Success = registerResult.Success,
+                Errors = registerResult.Errors,
+            };
+
+            if (!registerResult.Success) return Ok(response);
+            
+            var tokenAnswer = await _mediator.Send(new GenerateTokenRequest {UserId = registerResult.UserId});
 
             response.Token = tokenAnswer.Token;
 

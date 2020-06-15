@@ -10,6 +10,7 @@ using BooksApi.Entities;
 using BooksApi.UseCases.AddBook;
 using BooksApi.UseCases.DeleteBooks;
 using BooksApi.UseCases.Login;
+using BooksApi.UseCases.Register;
 using BooksApi.UseCases.UpdateBook;
 using FluentValidation;
 using Microsoft.Extensions.Configuration;
@@ -26,6 +27,7 @@ namespace BooksApi.Installers
             services.AddTransient<IValidator<DeleteBooksRequest>, DeleteBookRequestValidator>();
             services.AddTransient<IValidator<UpdateBookRequest>, UpdateBookRequestValidator>();
             services.AddTransient<IValidator<LoginRequest>, LoginRequestValidator>();
+            services.AddTransient<IValidator<RegisterRequest>, RegisterRequestValidator>();
             
             // Entity context provider
             services.AddSingleton(new ContextProvider());
