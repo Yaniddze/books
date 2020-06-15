@@ -36,6 +36,11 @@ export type LoginErrorAction = {
   payload: string[]; // Errors
 }
 
+export const LOGOUT = 'LOGOUT';
+export type LogoutAction = {
+  type: typeof LOGOUT;
+}
+
 export const LOGIN_ASYNC = 'LOGIN_ASYNC';
 export type LoginAsyncAction = {
   type: typeof LOGIN_ASYNC;
@@ -47,4 +52,5 @@ export type LoginActions =
   | LoginFinishAction
   | LoginSuccessAction
   | LoginErrorAction
-  | LoginAsyncAction;
+  | LoginAsyncAction
+  | LogoutAction;

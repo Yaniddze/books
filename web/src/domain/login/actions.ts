@@ -4,6 +4,7 @@ import {
   LOGIN_ERROR,
   LOGIN_SUCCESS,
   LOGIN_FINISH,
+  LOGOUT,
   LoginActions,
   LoginErrorAction,
   LoginSuccessAction,
@@ -34,6 +35,12 @@ export function success(payload: string): LoginSuccessAction {
   return {
     type: LOGIN_SUCCESS,
     payload,
+  };
+}
+
+export function logout(): LoginActions {
+  return {
+    type: LOGOUT,
   };
 }
 

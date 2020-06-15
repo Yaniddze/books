@@ -17,6 +17,7 @@ import { store } from './init/store';
 // Pages
 import { BookPage } from './pages/book-page';
 import { LoginPage } from './pages/login-page';
+import { RegisterPage } from './pages/register-page';
 
 // Components
 import { Header } from './components/header';
@@ -36,6 +37,9 @@ export function App(): ReactElement {
             </Route>
             <Route path="/login">
               <LoginPage />
+            </Route>
+            <Route path="/register">
+              <RegisterPage />
             </Route>
             <Redirect to="/books" />
           </Switch>

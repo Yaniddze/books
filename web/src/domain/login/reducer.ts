@@ -8,6 +8,7 @@ import {
   LOGIN_SUCCESS,
   LOGIN_ERROR,
   LOGIN_ASYNC,
+  LOGOUT,
   LoginState,
   LoginActions,
 } from './types';
@@ -59,6 +60,15 @@ export function loginReducer(state = initialState, action: LoginActions): LoginS
           success: true,
           errors: [],
           token: action.payload,
+        },
+      };
+    case LOGOUT:
+      Cookies.set('token', '');
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          token: '',
         },
       };
     case LOGIN_ASYNC:

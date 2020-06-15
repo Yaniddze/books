@@ -1,36 +1,36 @@
 import React, { FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useLoginState } from '../../domain/login/hooks/useLoginState';
-import { useLoginFetch } from '../../domain/login/hooks/useLoginFetch';
+import { useRegisterState } from '../../domain/register/hooks/useRegisterState';
+import { useRegisterFetch } from '../../domain/register/hooks/useRegisterFetch';
 import { TokenIdentity } from '../../components/identity';
 
 type PropTypes = {
   children?: never;
 }
 
-export const LoginPage: FC<PropTypes> = () => {
+export const RegisterPage: FC<PropTypes> = () => {
   const { handleSubmit, register, errors } = useForm();
 
-  const loginState = useLoginState();
-  const loginFetch = useLoginFetch();
+  const registerState = useRegisterState();
+  const registerFetch = useRegisterFetch();
 
   useEffect(() => {
-    document.title = 'Login';
+    document.title = 'Register';
   }, []);
 
-  const loginErrors = !loginState.isFetching && !loginState.data.success
-    && loginState.data.errors.map((error) => <div key={error}>{error}</div>);
+  const registerErrors = !registerState.isFetching && !registerState.data.success
+    && registerState.data.errors.map((error) => <div key={error}>{error}</div>);
 
-  const loginBtn = !loginState.isFetching && (
+  const loginBtn = !registerState.isFetching && (
     <div>
       <button type="submit">
-        Войти
+        Регистрация
       </button>
     </div>
   );
 
   return (
-    <TokenIdentity redirectOnEmpty to="books">
+    <TokenIdentity redirectOnEmpty to="/books">
       <div style={{
         border: '1px solid black',
         margin: '10px',
@@ -43,15 +43,15 @@ export const LoginPage: FC<PropTypes> = () => {
       }}
       >
         <h1>
-          Аутентификация
+          Регистрация
         </h1>
         <form
           onSubmit={handleSubmit((values: Record<string, string>) => {
-            loginFetch({ login: values.login, password: values.password });
+            registerFetch({ login: values.login, password: values.password });
           })}
         >
           <div>Login</div>
-          {loginErrors}
+          {registerErrors}
           <div>
             {errors.login && errors.login.message}
           </div>
