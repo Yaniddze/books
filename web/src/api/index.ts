@@ -5,6 +5,7 @@ import {
 } from '../domain/book/types';
 import { Authors } from '../domain/author/types';
 import { Genres } from '../domain/genre/types';
+import { LoginAnswer, LoginInfo } from '../domain/login/types';
 
 export type FetchDataType<T> = () => Promise<T>;
 
@@ -20,6 +21,9 @@ type APIFetchDataType = {
   };
   genres: {
     fetch: FetchDataType<Genres>;
+  };
+  login: {
+    fetch: (info: LoginInfo) => Promise<LoginAnswer>;
   };
 }
 
@@ -42,5 +46,9 @@ export const api: APIFetchDataType = {
   genres: {
     fetch: (): Promise<Genres> => axios.get(`${root}/genre/all`)
       .then((result) => result.data as Genres),
+  },
+  login: {
+    fetch: (info: LoginInfo): Promise<LoginAnswer> => axios.post(`${root}/identity/login`, info)
+      .then((result) => result.data as LoginAnswer),
   },
 };

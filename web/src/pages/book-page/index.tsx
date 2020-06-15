@@ -5,6 +5,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { BookItem } from '../../components/book-item';
 import { Button, RoundButton } from '../../components/button';
 import { BookItemAdded } from '../../components/book-item/item-added';
+import { TokenIdentity } from '../../components/identity';
 
 // Hooks
 import { useBookFetch } from '../../domain/book/hooks/useBookFetch';
@@ -116,25 +117,27 @@ export const BookPage: FC<PropTypes> = () => {
     );
 
   return (
-    <>
-      {loading}
-      {errors}
-      {deleteIcon}
-      <div style={{ display: 'flex' }}>
-        <div className={styles.bookItemsContainer}>
-          {books}
-          {addedItem}
+    <TokenIdentity redirectOnEmpty={false} to="/login">
+      <div>
+        {loading}
+        {errors}
+        {deleteIcon}
+        <div style={{ display: 'flex' }}>
+          <div className={styles.bookItemsContainer}>
+            {books}
+            {addedItem}
+          </div>
+        </div>
+        <div style={{
+          position: 'fixed',
+          bottom: 0,
+          right: 0,
+          margin: '10px',
+        }}
+        >
+          {roundedButton}
         </div>
       </div>
-      <div style={{
-        position: 'fixed',
-        bottom: 0,
-        right: 0,
-        margin: '10px',
-      }}
-      >
-        {roundedButton}
-      </div>
-    </>
+    </TokenIdentity>
   );
 };

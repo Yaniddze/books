@@ -16,6 +16,7 @@ import { store } from './init/store';
 
 // Pages
 import { BookPage } from './pages/book-page';
+import { LoginPage } from './pages/login-page';
 
 // Components
 import { Header } from './components/header';
@@ -30,8 +31,11 @@ export function App(): ReactElement {
 
         <BrowserRouter>
           <Switch>
-            <Route path="/books" title="Книги">
+            <Route path="/books">
               <BookPage />
+            </Route>
+            <Route path="/login">
+              <LoginPage />
             </Route>
             <Redirect to="/books" />
           </Switch>
