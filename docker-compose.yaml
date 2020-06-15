@@ -2,12 +2,14 @@ version: "3.7"
 
 services:
 
-  # web:
-  #   build: ./web
-  #   restart: always
-  #   ports:
-  #     - "8089:3000"
-  #   stdin_open: true
+  web:
+    build: ./web
+    restart: always
+    ports:
+      - "8089:3000"
+    stdin_open: true
+    depends_on:
+      - backend
 
   backend:
     build: ./backend/BooksApi
