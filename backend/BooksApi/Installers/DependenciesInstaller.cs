@@ -35,7 +35,7 @@ namespace BooksApi.Installers
             // Entity context provider
             services.AddDbContextPool<IContext, MyContext>(x => x.UseNpgsql(
                 Environment.GetEnvironmentVariable("CONNECTION_STRING")
-                ?? throw new ArgumentNullException()
+                ?? "host=localhost;port=8090;database=books;username=postgres;password=postgres"
             ));
             
             // CQRS

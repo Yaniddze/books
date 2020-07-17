@@ -24,6 +24,8 @@ services:
   postgres:
     image: postgres:latest
     restart: always
+    ports: 
+      - "8090:5432"
     volumes:
       - ./database/data:/var/lib/postgresql/data
       - ./database/scripts/seed.sql:/docker-entrypoint-initdb.d/seed.sql
