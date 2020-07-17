@@ -2,6 +2,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using BooksApi.Installers;
+using BooksApi.Installers.AutoMapper;
 using BooksApi.UnitTests.TestCQRS;
 using BooksApi.UnitTests.TestCQRS.AuthorImpl;
 using BooksApi.UnitTests.TestCQRS.BookImpl;

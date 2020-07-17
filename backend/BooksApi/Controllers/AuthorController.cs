@@ -9,7 +9,6 @@ namespace BooksApi.Controllers
 {
     [Route("api/v1/author")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-
     public class AuthorController: Controller
     {
         private readonly IMediator _mediator;
