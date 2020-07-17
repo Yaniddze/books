@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using BooksApi.Controllers.Responses;
+using BooksApi.UseCases.Abstractions;
 using BooksApi.UseCases.GenerateToken;
 using BooksApi.UseCases.Login;
 using BooksApi.UseCases.Register;
@@ -22,7 +22,7 @@ namespace BooksApi.Controllers
         public async Task<IActionResult> LoginAsync([FromBody] LoginRequest request)
         {
             var loginResult = await _mediator.Send(request);
-            var response = new LoginResponse
+            var response = new AbstractAnswer<string>
             {
                 Success = loginResult.Success,
                 Errors = loginResult.Errors,
@@ -32,7 +32,7 @@ namespace BooksApi.Controllers
             
             var tokenAnswer = await _mediator.Send(new GenerateTokenRequest {UserId = loginResult.Data});
 
-            response.Token = tokenAnswer.Token;
+            response.Data = tokenAnswer.Token;
 
             return Ok(response);
         }
@@ -41,7 +41,7 @@ namespace BooksApi.Controllers
         public async Task<IActionResult> RegisterAsync([FromBody] RegisterRequest request)
         {
             var registerResult = await _mediator.Send(request);
-            var response = new RegisterResponse
+            var response = new AbstractAnswer<string>
             {
                 Success = registerResult.Success,
                 Errors = registerResult.Errors,
@@ -51,7 +51,7 @@ namespace BooksApi.Controllers
             
             var tokenAnswer = await _mediator.Send(new GenerateTokenRequest {UserId = registerResult.Data});
 
-            response.Token = tokenAnswer.Token;
+            response.Data = tokenAnswer.Token;
 
             return Ok(response);
         }
