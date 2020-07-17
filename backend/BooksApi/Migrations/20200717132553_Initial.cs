@@ -14,10 +14,7 @@ namespace BooksApi.Migrations
                     id = table.Column<Guid>(nullable: false),
                     name = table.Column<string>(nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_author", x => x.id);
-                });
+                constraints: table => { table.PrimaryKey("PK_author", x => x.id); });
 
             migrationBuilder.CreateTable(
                 name: "genre",
@@ -26,10 +23,7 @@ namespace BooksApi.Migrations
                     id = table.Column<Guid>(nullable: false),
                     title = table.Column<string>(nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_genre", x => x.id);
-                });
+                constraints: table => { table.PrimaryKey("PK_genre", x => x.id); });
 
             migrationBuilder.CreateTable(
                 name: "users",
@@ -39,10 +33,7 @@ namespace BooksApi.Migrations
                     login = table.Column<string>(nullable: true),
                     password = table.Column<string>(nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_users", x => x.id);
-                });
+                constraints: table => { table.PrimaryKey("PK_users", x => x.id); });
 
             migrationBuilder.CreateTable(
                 name: "books",
@@ -107,6 +98,15 @@ namespace BooksApi.Migrations
                 name: "IX_tokens_user_id",
                 table: "tokens",
                 column: "user_id");
+
+            migrationBuilder.Sql(
+                "INSERT INTO genre VALUES (uuid_generate_v4(), 'Detective'), (uuid_generate_v4(), 'Action');");
+            migrationBuilder.Sql(
+                "INSERT INTO author VALUES (uuid_generate_v4(), 'Zinevich Yan'), (uuid_generate_v4(), 'Bagrov Nikolay');");
+            migrationBuilder.Sql(
+                "INSERT INTO books VALUES (uuid_generate_v4(), 'New book', 1942, (SELECT id FROM genre WHERE title = 'Detective' LIMIT 1), (SELECT id FROM author WHERE name = 'Zinevich Yan' LIMIT 1));");
+            migrationBuilder.Sql(
+                "INSERT INTO users VALUES (uuid_generate_v4(), 'root', 'root');");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
