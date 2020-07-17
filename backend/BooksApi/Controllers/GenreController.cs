@@ -1,11 +1,14 @@
 using System.Threading.Tasks;
 using BooksApi.UseCases.GetGenres;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BooksApi.Controllers
 {
     [Route("api/v1/genre")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class GenreController: Controller
     {
         private readonly IMediator _mediator;
