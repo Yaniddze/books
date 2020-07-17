@@ -10,6 +10,7 @@ namespace BooksApi.DataBase.Context
         public DbSet<GenreDB> Genres { get; set; }
         public DbSet<BookDB> Books { get; set; }
         public DbSet<UserDB> Users { get; set; }
+        public DbSet<TokenDB> Token { get; set; }
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -38,6 +39,10 @@ namespace BooksApi.DataBase.Context
             modelBuilder.Entity<UserDB>()
                 .ToTable("users")
                 .HasKey(x => x.Id);
+
+            modelBuilder.Entity<TokenDB>()
+                .ToTable("tokens")
+                .HasKey(x => x.Id);
             
             // Foreign keys
             modelBuilder.Entity<BookDB>()
@@ -49,6 +54,11 @@ namespace BooksApi.DataBase.Context
                 .HasOne(book => book.Genre)
                 .WithMany(author => author.Books)
                 .HasForeignKey(book => book.GenreId);
+
+            modelBuilder.Entity<TokenDB>()
+                .HasOne(token => token.User)
+                .WithMany(user => user.Tokens)
+                .HasForeignKey(token => token.UserId);
             
             // Map column name to prop
             modelBuilder.Entity<BookDB>()
@@ -98,6 +108,30 @@ namespace BooksApi.DataBase.Context
             modelBuilder.Entity<UserDB>()
                 .Property(x => x.Password)
                 .HasColumnName("password");
+
+            modelBuilder.Entity<TokenDB>()
+                .Property(x => x.Id)
+                .HasColumnName("id");
+                
+            modelBuilder.Entity<TokenDB>()
+                .Property(x => x.CreationDate)
+                .HasColumnName("creation_date");
+                
+            modelBuilder.Entity<TokenDB>()
+                .Property(x => x.ExpiryDate)
+                .HasColumnName("expiry_date");
+                
+            modelBuilder.Entity<TokenDB>()
+                .Property(x => x.JwtId)
+                .HasColumnName("jwt_id");
+                
+            modelBuilder.Entity<TokenDB>()
+                .Property(x => x.TokenValue)
+                .HasColumnName("token_value");
+                
+            modelBuilder.Entity<TokenDB>()
+                .Property(x => x.UserId)
+                .HasColumnName("user_id");
         }
     }
 }
