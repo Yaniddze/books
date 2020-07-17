@@ -18,7 +18,7 @@ const initialState: LoginState = {
   data: {
     errors: [],
     success: false,
-    token: Cookies.get('token') || '',
+    data: Cookies.get('token') || '',
   },
 };
 
@@ -32,7 +32,7 @@ export function loginReducer(state = initialState, action: LoginActions): LoginS
         data: {
           errors: [],
           success: true,
-          token: '',
+          data: '',
         },
       };
     case LOGIN_ERROR:
@@ -43,7 +43,7 @@ export function loginReducer(state = initialState, action: LoginActions): LoginS
         data: {
           errors: action.payload,
           success: false,
-          token: '',
+          data: '',
         },
       };
     case LOGIN_FINISH:
@@ -59,7 +59,7 @@ export function loginReducer(state = initialState, action: LoginActions): LoginS
         data: {
           success: true,
           errors: [],
-          token: action.payload,
+          data: action.payload,
         },
       };
     case LOGOUT:
@@ -68,7 +68,7 @@ export function loginReducer(state = initialState, action: LoginActions): LoginS
         ...state,
         data: {
           ...state.data,
-          token: '',
+          data: '',
         },
       };
     case LOGIN_CLEAN:
@@ -76,7 +76,7 @@ export function loginReducer(state = initialState, action: LoginActions): LoginS
         ...initialState,
         data: {
           ...initialState.data,
-          token: state.data.token,
+          data: state.data.data,
         },
       };
     case LOGIN_ASYNC:

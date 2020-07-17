@@ -9,7 +9,7 @@ export type AuthorsFetch = {
 }
 
 export type Authors = {
-  authors: Author[];
+  data: Author[];
   error: string[];
   success: boolean;
 }

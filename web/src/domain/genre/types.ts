@@ -9,7 +9,7 @@ export type GenreFetch = {
 }
 
 export type Genres = {
-  genres: Genre[];
+  data: Genre[];
   error: string[];
   success: boolean;
 }

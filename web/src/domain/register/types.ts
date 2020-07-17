@@ -9,7 +9,7 @@ export type RegisterState = {
 export type RegisterAnswer = {
   success: boolean;
   errors: string[];
-  token: string;
+  data: string;
 }
 
 export type RegisterInfo = {

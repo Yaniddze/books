@@ -9,7 +9,7 @@ export const Books: FC = () => {
   const errorMessageJSX = !data.success && <p>{data.errors.map((message) => message)}</p>;
   const loaderJSX = isFetching && <p>Loading data from API...</p>;
   const listJSX = isFetching
-    || data.books?.map(
+    || data.data?.map(
       (
         {
           bookInfo,

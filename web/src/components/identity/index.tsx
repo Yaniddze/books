@@ -12,7 +12,7 @@ type PropTypes = {
 export const TokenIdentity: FC<PropTypes> = ({ children, to, redirectOnEmpty }: PropTypes) => {
   const login = useLoginState();
 
-  const redirect = (login.data.token !== '') === redirectOnEmpty && <Redirect to={to} />;
+  const redirect = (login.data.data !== '') === redirectOnEmpty && <Redirect to={to} />;
 
   return (
     <div>

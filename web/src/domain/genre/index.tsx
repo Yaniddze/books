@@ -20,7 +20,7 @@ export const Genres: FC = () => {
 
   let i = 300;
 
-  const genres = !isFetching && data.success && data.genres.map(
+  const genres = !isFetching && data.success && data.data.map(
     (genre: Genre) => (
       <li key={i++}>
         { genre.title }

@@ -15,7 +15,7 @@ export function* makeRequest(body: BookToAdd): SagaIterator {
 
     if (result.success) {
       yield put(bookAddSuccess({
-        id: result.bookId,
+        id: result.data,
         bookInfo: {
           title: body.bookTitle,
           year: body.year,

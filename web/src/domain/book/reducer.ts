@@ -19,7 +19,7 @@ const initialState: BookState = {
   data: {
     success: false,
     errors: [],
-    books: [],
+    data: [],
   },
   isFetching: false,
 };
@@ -45,7 +45,7 @@ export const booksReducer = (
         data: {
           success: false,
           errors: action.payload,
-          books: [],
+          data: [],
         },
         isFetching: false,
       };
@@ -63,7 +63,7 @@ export const booksReducer = (
         isFetching: false,
         data: {
           ...state.data,
-          books: state.data.books.map((book) => (
+          data: state.data.data.map((book) => (
             book.id === action.payload.id ? action.payload : book
           )),
         },
@@ -73,7 +73,7 @@ export const booksReducer = (
         ...state,
         data: {
           ...state.data,
-          books: [...state.data.books, action.payload],
+          data: [...state.data.data, action.payload],
         },
       };
     case BOOKS_DELETED_SUCCESS:
@@ -81,7 +81,7 @@ export const booksReducer = (
         ...state,
         data: {
           ...state.data,
-          books: state.data.books.filter((x) => !action.payload.includes(x.id)),
+          data: state.data.data.filter((x) => !action.payload.includes(x.id)),
         },
       };
     case BOOK_FETCH_ASYNC:

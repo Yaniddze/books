@@ -44,7 +44,7 @@ export type BookUpdateState = {
 export type BookAddState = {
   success: boolean;
   errors: string[];
-  bookId: string;
+  data: string;
 }
 
 export type BookDeleteState = {
@@ -55,7 +55,7 @@ export type BookDeleteState = {
 export type Books = {
   success: boolean;
   errors: string[];
-  books: Book[];
+  data: Book[];
 };
 
 // Sync

@@ -18,7 +18,7 @@ export const Authors: FC = () => {
     </p>
   );
   const fetching = isFetching && <p> Loading data from API... </p>;
-  const authors = !isFetching && data.success && data.authors.map((author: Author) => (
+  const authors = !isFetching && data.success && data.data.map((author: Author) => (
     <li key={i++}>
       {author.name}
     </li>

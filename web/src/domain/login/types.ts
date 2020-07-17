@@ -5,7 +5,7 @@ export type LoginState = {
 
 export type LoginAnswer = {
   success: boolean;
-  token: string;
+  data: string;
   errors: string[];
 }
 

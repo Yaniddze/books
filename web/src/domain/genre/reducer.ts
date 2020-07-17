@@ -13,7 +13,7 @@ const initialState: GenreFetch = {
   data: {
     error: [],
     success: true,
-    genres: [],
+    data: [],
   },
 };
 
@@ -35,7 +35,7 @@ export function genreReducer(state = initialState, action: FetchGenreActions): G
         data: {
           success: false,
           error: action.payload,
-          genres: [],
+          data: [],
         },
       };
     case GENRE_FILL:

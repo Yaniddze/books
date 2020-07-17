@@ -10,7 +10,7 @@ import {
 
 const initialState: AuthorsFetch = {
   data: {
-    authors: [],
+    data: [],
     error: [],
     success: false,
   },
@@ -39,7 +39,7 @@ export function authorReducer(state = initialState, action: AuthorsActionTypes):
         ...state,
         isFetching: false,
         data: {
-          authors: [],
+          data: [],
           error: action.payload,
           success: false,
         },

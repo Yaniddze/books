@@ -30,7 +30,7 @@ function* makeRequest(info: RegisterInfo): SagaIterator {
 
     if (result.success) {
       yield put(registerSuccess()); // call register success
-      yield put(loginSuccess(result.token)); // call login success to write token
+      yield put(loginSuccess(result.data)); // call login success to write token
     } else {
       yield put(error(result.errors));
     }

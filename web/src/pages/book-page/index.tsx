@@ -88,14 +88,14 @@ export const BookPage: FC<PropTypes> = () => {
     && bookFetchState.data.success;
 
   const books = successLoaded
-    && bookFetchState.data.books.map(
+    && bookFetchState.data.data.map(
       (book: Book) => (
         <BookItem
           key={book.id}
           book={book}
           onItemClick={onItemClick}
-          authors={authorsFetchState.data.authors}
-          genres={genresFetchState.data.genres}
+          authors={authorsFetchState.data.data}
+          genres={genresFetchState.data.data}
           checked={selected.includes(book.id)}
         />
       ),
@@ -106,8 +106,8 @@ export const BookPage: FC<PropTypes> = () => {
     <RoundButton onClick={(): void => {
       setAddedItem(
         <BookItemAdded
-          authors={authorsFetchState.data.authors}
-          genres={genresFetchState.data.genres}
+          authors={authorsFetchState.data.data}
+          genres={genresFetchState.data.data}
           onCancel={(): void => {
             setAddedItem('');
           }}
