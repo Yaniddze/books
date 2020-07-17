@@ -22,8 +22,9 @@ namespace BooksApi.DataBase.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            
-            // Primary Keys
+
+            #region Primary keys
+
             modelBuilder.Entity<BookDB>()
                 .ToTable("books")
                 .HasKey(x => x.Id);
@@ -43,8 +44,12 @@ namespace BooksApi.DataBase.Context
             modelBuilder.Entity<TokenDB>()
                 .ToTable("tokens")
                 .HasKey(x => x.Id);
-            
-            // Foreign keys
+
+            #endregion
+
+
+            #region Foreign keys
+
             modelBuilder.Entity<BookDB>()
                 .HasOne(book => book.Author)
                 .WithMany(author => author.Books)
@@ -59,8 +64,14 @@ namespace BooksApi.DataBase.Context
                 .HasOne(token => token.User)
                 .WithMany(user => user.Tokens)
                 .HasForeignKey(token => token.UserId);
-            
-            // Map column name to prop
+
+            #endregion
+
+
+            #region Props to columns
+
+            #region Book
+
             modelBuilder.Entity<BookDB>()
                 .Property(x => x.AuthorId)
                 .HasColumnName("author_id");
@@ -80,7 +91,11 @@ namespace BooksApi.DataBase.Context
             modelBuilder.Entity<BookDB>()
                 .Property(x => x.GenreId)
                 .HasColumnName("genre_id");
-            
+
+            #endregion
+
+            #region Author
+
             modelBuilder.Entity<AuthorDB>()
                 .Property(x => x.Id)
                 .HasColumnName("id");
@@ -88,7 +103,11 @@ namespace BooksApi.DataBase.Context
             modelBuilder.Entity<AuthorDB>()
                 .Property(x => x.Name)
                 .HasColumnName("name");
-            
+
+            #endregion
+
+            #region Genre
+
             modelBuilder.Entity<GenreDB>()
                 .Property(x => x.Id)
                 .HasColumnName("id");
@@ -96,6 +115,10 @@ namespace BooksApi.DataBase.Context
             modelBuilder.Entity<GenreDB>()
                 .Property(x => x.Title)
                 .HasColumnName("title");
+
+            #endregion
+
+            #region User
 
             modelBuilder.Entity<UserDB>()
                 .Property(x => x.Id)
@@ -108,6 +131,10 @@ namespace BooksApi.DataBase.Context
             modelBuilder.Entity<UserDB>()
                 .Property(x => x.Password)
                 .HasColumnName("password");
+
+            #endregion
+
+            #region Token
 
             modelBuilder.Entity<TokenDB>()
                 .Property(x => x.Id)
@@ -132,6 +159,10 @@ namespace BooksApi.DataBase.Context
             modelBuilder.Entity<TokenDB>()
                 .Property(x => x.UserId)
                 .HasColumnName("user_id");
+
+            #endregion
+
+            #endregion
         }
     }
 }
