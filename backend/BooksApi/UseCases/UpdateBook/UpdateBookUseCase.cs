@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -6,14 +5,13 @@ using BooksApi.CQRS.Commands;
 using BooksApi.CQRS.Commands.Abstractions;
 using BooksApi.CQRS.Queries;
 using BooksApi.Entities;
+using BooksApi.UseCases.Abstractions;
 using FluentValidation;
-using MediatR;
 
 namespace BooksApi.UseCases.UpdateBook
 {
-    public class UpdateBookUseCase : IRequestHandler<UpdateBookRequest, UpdateBookAnswer>
+    public class UpdateBookUseCase : AbstractUseCase<UpdateBookRequest>
     {
-        private readonly IValidator<UpdateBookRequest> _validator;
         private readonly ICommandHandler<UpdateBookCommand> _handler;
         private readonly IFindQuery<Author> _authorFinder;
         private readonly IFindQuery<Genre> _genreFinder;
@@ -27,8 +25,8 @@ namespace BooksApi.UseCases.UpdateBook
             IFindQuery<Genre> genreFinder,
             IFindQuery<Book> bookFinder
         )
+        : base(validator)
         {
-            _validator = validator;
             _handler = handler;
             _mapper = mapper;
             _authorFinder = authorFinder;
@@ -36,57 +34,31 @@ namespace BooksApi.UseCases.UpdateBook
             _bookFinder = bookFinder;
         }
 
-        public async Task<UpdateBookAnswer> Handle(UpdateBookRequest request, CancellationToken cancellationToken)
+        protected override async Task<AbstractAnswer> HandleAsync(UpdateBookRequest request, CancellationToken cancellationToken)
         {
-            var validationResult = await _validator.ValidateAsync(request, cancellationToken);
-
-            if (!validationResult.IsValid)
-            {
-                return new UpdateBookAnswer
-                {
-                    Success = false,
-                    Errors = validationResult.Errors.Select(x => x.ErrorMessage),
-                };
-            }
-
             var mappedCommand = _mapper.Map<UpdateBookRequest, UpdateBookCommand>(request);
 
             var foundedBook = await _bookFinder.FindOneAsync(x => x.Id == mappedCommand.BookId);
             if (foundedBook == null)
             {
-                return new UpdateBookAnswer
-                {
-                    Success = false,
-                    Errors = new[] {"Book not found. Use other id"}
-                };
+                return CreateBadAnswer(new[] {"Book not found. Use other id"});
             }
             
             var foundedAuthor = await _authorFinder.FindOneAsync(x => x.Id == mappedCommand.NewAuthorId);
             if (foundedAuthor == null)
             {
-                return new UpdateBookAnswer
-                {
-                    Success = false,
-                    Errors = new[] {"Author not found. Use other id"}
-                };
+                return CreateBadAnswer(new[] {"Author not found. Use other id"});
             }
 
             var foundedGenre = await _genreFinder.FindOneAsync(x => x.Id == mappedCommand.NewGenreId);
             if (foundedGenre == null)
             {
-                return new UpdateBookAnswer
-                {
-                    Success = false,
-                    Errors = new[] {"Genre not found. Use other id"}
-                };
+                return CreateBadAnswer(new[] {"Genre not found. Use other id"});
             }
 
             await _handler.HandleAsync(mappedCommand);
 
-            return new UpdateBookAnswer
-            {
-                Success = true,
-            };
+            return CreateSuccessAnswer();
         }
     }
 }

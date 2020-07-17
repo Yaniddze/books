@@ -30,7 +30,7 @@ namespace BooksApi.Controllers
 
             if (!loginResult.Success) return Ok(response);
             
-            var tokenAnswer = await _mediator.Send(new GenerateTokenRequest {UserId = loginResult.UserId});
+            var tokenAnswer = await _mediator.Send(new GenerateTokenRequest {UserId = loginResult.Data});
 
             response.Token = tokenAnswer.Token;
 
@@ -49,7 +49,7 @@ namespace BooksApi.Controllers
 
             if (!registerResult.Success) return Ok(response);
             
-            var tokenAnswer = await _mediator.Send(new GenerateTokenRequest {UserId = registerResult.UserId});
+            var tokenAnswer = await _mediator.Send(new GenerateTokenRequest {UserId = registerResult.Data});
 
             response.Token = tokenAnswer.Token;
 

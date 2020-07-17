@@ -2,24 +2,24 @@ version: "3.7"
 
 services:
 
-  web:
-    build: ./web
-    restart: always
-    ports:
-      - "8089:3000"
-    stdin_open: true
-    depends_on:
-      - backend
+  # web:
+  #   build: ./web
+  #   restart: always
+  #   ports:
+  #     - "8089:3000"
+  #   stdin_open: true
+  #   depends_on:
+  #     - backend
 
-  backend:
-    build: ./backend/BooksApi
-    restart: always
-    ports:
-      - "8088:80"
-    depends_on:
-      - postgres
-    environment:
-      - CONNECTION_STRING=host=postgres;port=5432;database=books;username=postgres;password=postgres
+  # backend:
+  #   build: ./backend/BooksApi
+  #   restart: always
+  #   ports:
+  #     - "8088:80"
+  #   depends_on:
+  #     - postgres
+  #   environment:
+  #     - CONNECTION_STRING=host=postgres;port=5432;database=books;username=postgres;password=postgres
 
   postgres:
     image: postgres:latest

@@ -11,6 +11,9 @@ using BooksApi.DataBase.CQRS.UserImpl;
 using BooksApi.Entities;
 using BooksApi.UseCases.AddBook;
 using BooksApi.UseCases.DeleteBooks;
+using BooksApi.UseCases.GetAuthors;
+using BooksApi.UseCases.GetBooks;
+using BooksApi.UseCases.GetGenres;
 using BooksApi.UseCases.Login;
 using BooksApi.UseCases.Register;
 using BooksApi.UseCases.UpdateBook;
@@ -31,6 +34,10 @@ namespace BooksApi.Installers
             services.AddTransient<IValidator<UpdateBookRequest>, UpdateBookRequestValidator>();
             services.AddTransient<IValidator<LoginRequest>, LoginRequestValidator>();
             services.AddTransient<IValidator<RegisterRequest>, RegisterRequestValidator>();
+            services.AddTransient<IValidator<GetAuthorsRequest>, GetAuthorsRequestValidator>();
+            services.AddTransient<IValidator<GetBooksRequest>, GetBooksRequestValidator>();
+            services.AddTransient<IValidator<GetGenresRequest>, GetGenresRequestValidator>();
+
             
             // Entity context provider
             services.AddDbContextPool<IContext, MyContext>(x => x.UseNpgsql(

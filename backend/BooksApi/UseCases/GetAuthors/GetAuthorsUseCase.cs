@@ -1,27 +1,26 @@
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using BooksApi.CQRS.Queries;
 using BooksApi.Entities;
-using MediatR;
+using BooksApi.UseCases.Abstractions;
+using FluentValidation;
 
 namespace BooksApi.UseCases.GetAuthors
 {
-    public class GetAuthorsUseCase: IRequestHandler<GetAuthorsRequest, GetAuthorsAnswer>
+    public class GetAuthorsUseCase: AbstractUseCase<GetAuthorsRequest, IEnumerable<Author>>
     {
         private readonly IGetAllQuery<Author> _authorQuery;
 
-        public GetAuthorsUseCase(IGetAllQuery<Author> authorQuery)
+        public GetAuthorsUseCase(IGetAllQuery<Author> authorQuery, IValidator<GetAuthorsRequest> validator)
+        : base(validator)
         {
             _authorQuery = authorQuery;
         }
 
-        public async Task<GetAuthorsAnswer> Handle(GetAuthorsRequest request, CancellationToken cancellationToken)
+        protected override async Task<AbstractAnswer<IEnumerable<Author>>> HandleAsync(GetAuthorsRequest request, CancellationToken cancellationToken)
         {
-            return new GetAuthorsAnswer
-            {
-                Success = true,
-                Authors = await _authorQuery.InvokeAsync(),
-            };
+            return CreateSuccessAnswer(await _authorQuery.InvokeAsync());
         }
     }
 }
