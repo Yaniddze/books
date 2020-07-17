@@ -22,7 +22,8 @@ namespace BooksApi.DataBase.CQRS.UserImpl
         public async Task HandleAsync(AddUserCommand handled)
         {
             var mappedUser = _mapper.Map<User, UserDB>(handled.UserToAdd);
-            await _context.Users.AddAsync(mappedUser);
+            _context.Users.Add(mappedUser);
+            await _context.SaveChangesAsync();
         }
     }
 }

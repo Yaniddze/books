@@ -36,8 +36,8 @@ namespace BooksApi
 
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
-                var context = serviceScope.ServiceProvider.GetRequiredService<MyContext>();
-                context.Database.Migrate();
+                var context = serviceScope.ServiceProvider.GetRequiredService<IContext>();
+                context.DataBaseFacade.Migrate();
             }
 
             var swaggerOptions = new SwaggerOptions();

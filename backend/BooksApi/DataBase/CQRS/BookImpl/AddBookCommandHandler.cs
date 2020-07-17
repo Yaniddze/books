@@ -28,7 +28,9 @@ namespace BooksApi.DataBase.CQRS.BookImpl
             mappedBook.GenreId = handled.BookToAdd.Genre.Id;
             mappedBook.Genre = null;
             
-            await _context.Books.AddAsync(mappedBook);
+            _context.Books.Add(mappedBook);
+            
+            await _context.SaveChangesAsync();
         }
     }
 }

@@ -1,5 +1,8 @@
+using System;
+using System.Threading.Tasks;
 using BooksApi.DataBase.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace BooksApi.DataBase.Context
 {
@@ -9,6 +12,12 @@ namespace BooksApi.DataBase.Context
         public DbSet<GenreDB> Genres { get; set; }
         public DbSet<BookDB> Books { get; set; }
         public DbSet<UserDB> Users { get; set; }
+        public DatabaseFacade DataBaseFacade => Database;
+        public async Task SaveChangesAsync()
+        {
+            await base.SaveChangesAsync();
+        }
+
         public DbSet<TokenDB> Tokens { get; set; }
 
         public MyContext(DbContextOptions options) 
