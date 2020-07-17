@@ -1,5 +1,10 @@
 // Core
-import React, { FC, useEffect, useState } from 'react';
+import React, {
+  FC,
+  ReactElement,
+  useEffect,
+  useState,
+} from 'react';
 
 // Components
 import { BookItem } from '../../components/book-item';
@@ -37,7 +42,7 @@ export const BookPage: FC<PropTypes> = () => {
   const genresFetchState = useGenresFetch();
 
   const [selected, setSelected] = useState<string[]>([]);
-  const [addedItem, setAddedItem] = useState();
+  const [addedItem, setAddedItem] = useState<string | ReactElement>('');
 
   const loading = authorsFetchState.isFetching
     && genresFetchState.isFetching
