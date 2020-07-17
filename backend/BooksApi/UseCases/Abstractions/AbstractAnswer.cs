@@ -8,4 +8,10 @@ namespace BooksApi.UseCases.Abstractions
         public IEnumerable<string> Errors { get; set; }
         public TData Data { get; set; }
     }
+
+    public class AbstractAnswer
+    {
+        public bool Success { get; set; }
+        public IEnumerable<string> Errors { get; set; }
+    }
 }
