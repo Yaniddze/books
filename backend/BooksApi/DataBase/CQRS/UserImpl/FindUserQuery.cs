@@ -14,38 +14,32 @@ namespace BooksApi.DataBase.CQRS.UserImpl
 {
     public class FindUserQuery: IFindQuery<User>
     {
-        private readonly ContextProvider _contextProvider;
+        private readonly IContext _context;
         private readonly IMapper _mapper;
 
-        public FindUserQuery(ContextProvider contextProvider, IMapper mapper)
+        public FindUserQuery(IMapper mapper, IContext context)
         {
-            _contextProvider = contextProvider;
             _mapper = mapper;
+            _context = context;
         }
 
         public async Task<User> FindOneAsync(Expression<Func<User, bool>> pattern)
         {
-            using (var context = _contextProvider.GetContext())
-            {
-                var mappedPattern = _mapper.Map<Expression<Func<User, bool>>, Expression<Func<UserDB, bool>>>(pattern);
+            var mappedPattern = _mapper.Map<Expression<Func<User, bool>>, Expression<Func<UserDB, bool>>>(pattern);
 
-                var founded = await context.Users.FirstOrDefaultAsync(mappedPattern);
+            var founded = await _context.Users.FirstOrDefaultAsync(mappedPattern);
 
-                return founded == null ? null : _mapper.Map<UserDB, User>(founded);
-            }
+            return founded == null ? null : _mapper.Map<UserDB, User>(founded);
         }
 
         public async Task<IEnumerable<User>> FindManyAsync(Expression<Func<User, bool>> pattern)
         {
-            using (var context = _contextProvider.GetContext())
-            {
-                var mappedPattern = _mapper.Map<Expression<Func<User, bool>>, Expression<Func<UserDB, bool>>>(pattern);
+            var mappedPattern = _mapper.Map<Expression<Func<User, bool>>, Expression<Func<UserDB, bool>>>(pattern);
 
-                return await context.Users
-                    .Where(mappedPattern)
-                    .Select(x => _mapper.Map<UserDB, User>(x))
-                    .ToListAsync();
-            }
+            return await _context.Users
+                .Where(mappedPattern)
+                .Select(x => _mapper.Map<UserDB, User>(x))
+                .ToListAsync();
         }
     }
 }

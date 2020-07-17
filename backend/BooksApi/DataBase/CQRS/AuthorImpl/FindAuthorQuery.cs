@@ -14,38 +14,36 @@ namespace BooksApi.DataBase.CQRS.AuthorImpl
 {
     public class FindAuthorQuery: IFindQuery<Author>
     {
-        private readonly ContextProvider _contextProvider;
+        private readonly IContext _context;
         private readonly IMapper _mapper;
 
-        public FindAuthorQuery(IMapper mapper, ContextProvider contextProvider)
+        public FindAuthorQuery(IMapper mapper, IContext context)
         {
             _mapper = mapper;
-            _contextProvider = contextProvider;
+            _context = context;
         }
 
         public async Task<Author> FindOneAsync(Expression<Func<Author, bool>> pattern)
         {
-            using (var context = _contextProvider.GetContext())
-            {
-                var mappedPattern = 
-                    _mapper.Map<Expression<Func<Author, bool>>, Expression<Func<AuthorDB, bool>>>(pattern);
-                var founded = await context.Authors.FirstOrDefaultAsync(mappedPattern);
-                return founded == null ? null : _mapper.Map<AuthorDB, Author>(founded);
-            }
+            
+            var mappedPattern = 
+                _mapper.Map<Expression<Func<Author, bool>>, Expression<Func<AuthorDB, bool>>>(pattern);
+            var founded = await _context.Authors.FirstOrDefaultAsync(mappedPattern);
+            return founded == null ? null : _mapper.Map<AuthorDB, Author>(founded);
+        
         }
 
         public async Task<IEnumerable<Author>> FindManyAsync(Expression<Func<Author, bool>> pattern)
         {
-            using (var context = _contextProvider.GetContext())
-            {
-                var mappedPattern = 
-                    _mapper.Map<Expression<Func<Author, bool>>, Expression<Func<AuthorDB, bool>>>(pattern);
+            
+            var mappedPattern = 
+                _mapper.Map<Expression<Func<Author, bool>>, Expression<Func<AuthorDB, bool>>>(pattern);
 
-                return await context.Authors
-                    .Where(mappedPattern)
-                    .Select(x => _mapper.Map<AuthorDB, Author>(x))
-                    .ToListAsync();
-            }
+            return await _context.Authors
+                .Where(mappedPattern)
+                .Select(x => _mapper.Map<AuthorDB, Author>(x))
+                .ToListAsync();
+        
             
         }
     }

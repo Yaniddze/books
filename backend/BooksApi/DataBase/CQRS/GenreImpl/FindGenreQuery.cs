@@ -14,36 +14,30 @@ namespace BooksApi.DataBase.CQRS.GenreImpl
 {
     public class FindGenreQuery: IFindQuery<Genre>
     {
-        private readonly ContextProvider _contextProvider;
+        private readonly IContext _context;
         private readonly IMapper _mapper;
 
-        public FindGenreQuery(IMapper mapper, ContextProvider contextProvider)
+        public FindGenreQuery(IMapper mapper, IContext context)
         {
             _mapper = mapper;
-            _contextProvider = contextProvider;
+            _context = context;
         }
         public async Task<Genre> FindOneAsync(Expression<Func<Genre, bool>> pattern)
         {
-            using (var context = _contextProvider.GetContext())
-            {
-                var mappedPattern = 
-                    _mapper.Map<Expression<Func<Genre, bool>>, Expression<Func<GenreDB, bool>>>(pattern);
-                var founded = await context.Genres.FirstOrDefaultAsync(mappedPattern);
-                return founded == null ? null : _mapper.Map<GenreDB, Genre>(founded);
-            }
+            var mappedPattern = 
+                _mapper.Map<Expression<Func<Genre, bool>>, Expression<Func<GenreDB, bool>>>(pattern);
+            var founded = await _context.Genres.FirstOrDefaultAsync(mappedPattern);
+            return founded == null ? null : _mapper.Map<GenreDB, Genre>(founded);
         }
 
         public async Task<IEnumerable<Genre>> FindManyAsync(Expression<Func<Genre, bool>> pattern)
         {
-            using (var context = _contextProvider.GetContext())
-            {
-                var mappedPattern = 
-                    _mapper.Map<Expression<Func<Genre, bool>>, Expression<Func<GenreDB, bool>>>(pattern);
-                return await context.Genres
-                    .Where(mappedPattern)
-                    .Select(x => _mapper.Map<GenreDB, Genre>(x))
-                    .ToListAsync();
-            }
+            var mappedPattern = 
+                _mapper.Map<Expression<Func<Genre, bool>>, Expression<Func<GenreDB, bool>>>(pattern);
+            return await _context.Genres
+                .Where(mappedPattern)
+                .Select(x => _mapper.Map<GenreDB, Genre>(x))
+                .ToListAsync();
         }
     }
 }

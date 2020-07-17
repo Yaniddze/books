@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using BooksApi.CQRS.Commands;
@@ -11,27 +10,24 @@ namespace BooksApi.DataBase.CQRS.BookImpl
 {
     public class UpdateBookCommandHandler : ICommandHandler<UpdateBookCommand>
     {
-        private readonly ContextProvider _contextProvider;
+        private readonly IContext _context;
 
-        public UpdateBookCommandHandler(ContextProvider contextProvider)
+        public UpdateBookCommandHandler(IContext context)
         {
-            _contextProvider = contextProvider;
+            _context = context;
         }
 
         public async Task HandleAsync(UpdateBookCommand handled)
         {
-            using (var context = _contextProvider.GetContext())
-            {
-                await context.Books
-                    .Where(x => x.Id == handled.BookId)
-                    .UpdateAsync(x => new BookDB
-                    {
-                        Title = handled.NewTitle,
-                        Year = handled.NewYear,
-                        AuthorId = handled.NewAuthorId,
-                        GenreId = handled.NewGenreId,
-                    });
-            }
+            await _context.Books
+                .Where(x => x.Id == handled.BookId)
+                .UpdateAsync(x => new BookDB
+                {
+                    Title = handled.NewTitle,
+                    Year = handled.NewYear,
+                    AuthorId = handled.NewAuthorId,
+                    GenreId = handled.NewGenreId,
+                });
         }
     }
 }

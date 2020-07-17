@@ -12,25 +12,22 @@ namespace BooksApi.DataBase.CQRS.BookImpl
 {
     public class GetAllBooks: IGetAllQuery<Book>
     {
-        private readonly ContextProvider _contextProvider;
+        private readonly IContext _context;
         private readonly IMapper _mapper;
 
-        public GetAllBooks(ContextProvider contextProvider, IMapper mapper)
+        public GetAllBooks(IMapper mapper, IContext context)
         {
-            _contextProvider = contextProvider;
             _mapper = mapper;
+            _context = context;
         }
 
         public async Task<IEnumerable<Book>> InvokeAsync()
         {
-            using (var context = _contextProvider.GetContext())
-            {
-                return await context.Books
-                    .Include(x => x.Author)
-                    .Include(x => x.Genre)
-                    .Select(x => _mapper.Map<BookDB, Book>(x))
-                    .ToListAsync();
-            }
+            return await _context.Books
+                .Include(x => x.Author)
+                .Include(x => x.Genre)
+                .Select(x => _mapper.Map<BookDB, Book>(x))
+                .ToListAsync();
         }
     }
 }

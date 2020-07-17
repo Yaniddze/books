@@ -12,23 +12,20 @@ namespace BooksApi.DataBase.CQRS.GenreImpl
 {
     public class GetAllGenres: IGetAllQuery<Genre>
     {
-        private readonly ContextProvider _contextProvider;
+        private readonly IContext _context;
         private readonly IMapper _mapper;
 
-        public GetAllGenres(IMapper mapper, ContextProvider contextProvider)
+        public GetAllGenres(IMapper mapper, IContext context)
         {
             _mapper = mapper;
-            _contextProvider = contextProvider;
+            _context = context;
         }
 
         public async Task<IEnumerable<Genre>> InvokeAsync()
         {
-            using (var context = _contextProvider.GetContext())
-            {
-                return await context.Genres
-                    .Select(x => _mapper.Map<GenreDB, Genre>(x))
-                    .ToListAsync();
-            }
+            return await _context.Genres
+                .Select(x => _mapper.Map<GenreDB, Genre>(x))
+                .ToListAsync();
         }
     }
 }

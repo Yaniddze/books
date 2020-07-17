@@ -10,23 +10,19 @@ namespace BooksApi.DataBase.CQRS.UserImpl
 {
     public class AddUserCommandHandler: ICommandHandler<AddUserCommand>
     {
-        private readonly ContextProvider _contextProvider;
+        private readonly IContext _context;
         private readonly IMapper _mapper;
 
-        public AddUserCommandHandler(ContextProvider contextProvider, IMapper mapper)
+        public AddUserCommandHandler(IMapper mapper, IContext context)
         {
-            _contextProvider = contextProvider;
             _mapper = mapper;
+            _context = context;
         }
 
         public async Task HandleAsync(AddUserCommand handled)
         {
-            using (var context = _contextProvider.GetContext())
-            {
-                var mappedUser = _mapper.Map<User, UserDB>(handled.UserToAdd);
-                context.Users.Add(mappedUser);
-                await context.SaveChangesAsync();
-            }
+            var mappedUser = _mapper.Map<User, UserDB>(handled.UserToAdd);
+            await _context.Users.AddAsync(mappedUser);
         }
     }
 }

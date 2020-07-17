@@ -14,38 +14,29 @@ namespace BooksApi.DataBase.CQRS.BookImpl
 {
     public class FindBookQuery: IFindQuery<Book>
     {
-        private readonly ContextProvider _contextProvider;
+        private readonly IContext _context;
         private readonly IMapper _mapper;
 
-        public FindBookQuery(
-            ContextProvider contextProvider, 
-            IMapper mapper
-        )
+        public FindBookQuery(IMapper mapper, IContext context)
         {
-            _contextProvider = contextProvider;
             _mapper = mapper;
+            _context = context;
         }
 
         public async Task<Book> FindOneAsync(Expression<Func<Book, bool>> pattern)
         {
-            using (var context = _contextProvider.GetContext())
-            {
-                var mappedPattern = _mapper.Map<Expression<Func<Book, bool>>, Expression<Func<BookDB, bool>>>(pattern);
-                var founded = await context.Books.FirstOrDefaultAsync(mappedPattern);
-                return founded == null ? null : _mapper.Map<BookDB, Book>(founded);
-            }
+            var mappedPattern = _mapper.Map<Expression<Func<Book, bool>>, Expression<Func<BookDB, bool>>>(pattern);
+            var founded = await _context.Books.FirstOrDefaultAsync(mappedPattern);
+            return founded == null ? null : _mapper.Map<BookDB, Book>(founded);
         }
 
         public async Task<IEnumerable<Book>> FindManyAsync(Expression<Func<Book, bool>> pattern)
         {
-            using (var context = _contextProvider.GetContext())
-            {
-                var mappedPattern = _mapper.Map<Expression<Func<Book, bool>>, Expression<Func<BookDB, bool>>>(pattern);
-                return await context.Books
-                    .Where(mappedPattern)
-                    .Select(x => _mapper.Map<BookDB, Book>(x))
-                    .ToListAsync();
-            }
+            var mappedPattern = _mapper.Map<Expression<Func<Book, bool>>, Expression<Func<BookDB, bool>>>(pattern);
+            return await _context.Books
+                .Where(mappedPattern)
+                .Select(x => _mapper.Map<BookDB, Book>(x))
+                .ToListAsync();
         }
     }
 }

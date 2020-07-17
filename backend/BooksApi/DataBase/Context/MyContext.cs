@@ -1,23 +1,18 @@
-using System;
 using BooksApi.DataBase.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace BooksApi.DataBase.Context
 {
-    public class MyContext: DbContext
+    public class MyContext: DbContext, IContext
     {
         public DbSet<AuthorDB> Authors { get; set; }
         public DbSet<GenreDB> Genres { get; set; }
         public DbSet<BookDB> Books { get; set; }
         public DbSet<UserDB> Users { get; set; }
-        public DbSet<TokenDB> Token { get; set; }
-        
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseNpgsql(Environment.GetEnvironmentVariable("CONNECTION_STRING") ??
-                                     throw new ArgumentNullException());
-        }
+        public DbSet<TokenDB> Tokens { get; set; }
+
+        public MyContext(DbContextOptions options) 
+            : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

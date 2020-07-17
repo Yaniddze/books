@@ -9,22 +9,19 @@ namespace BooksApi.DataBase.CQRS.BookImpl
 {
     public class DeleteBookCommandHandler: ICommandHandler<DeleteBooksCommand>
     {
-        private readonly ContextProvider _contextProvider;
+        private readonly IContext _context;
 
-        public DeleteBookCommandHandler(ContextProvider contextProvider)
+        public DeleteBookCommandHandler(IContext context)
         {
-            _contextProvider = contextProvider;
+            _context = context;
         }
 
         public async Task HandleAsync(DeleteBooksCommand handled)
         {
-            using (var context = _contextProvider.GetContext())
-            {
-                await context.Books
-                    .Where(book => handled.BookIds
-                        .Any(id => book.Id == id))
-                    .DeleteAsync();
-            }
+            await _context.Books
+                .Where(book => handled.BookIds
+                    .Any(id => book.Id == id))
+                .DeleteAsync();
         }
     }
 }
