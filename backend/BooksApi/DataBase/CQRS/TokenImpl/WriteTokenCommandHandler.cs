@@ -18,7 +18,7 @@ namespace BooksApi.DataBase.CQRS.TokenImpl
 
         public async Task HandleAsync(WriteTokenCommand handled)
         {
-            await _context.Tokens.AddAsync(new TokenDB
+            _context.Tokens.Add(new TokenDB
             {
                 Id = Guid.NewGuid(),
                 CreationDate = DateTime.UtcNow,
@@ -27,6 +27,8 @@ namespace BooksApi.DataBase.CQRS.TokenImpl
                 TokenValue = handled.Token,
                 UserId = handled.UserId,
             });
+
+            await _context.SaveChangesAsync();
         }
     }
 }
