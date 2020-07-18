@@ -5,6 +5,6 @@ namespace BooksApi.CQRS.Commands
 {
     public class DeactivateTokenCommand: ICommand
     {
-        public Guid TokenId { get; set; }
+        public Guid UserId { get; set; }
     }
 }

@@ -20,7 +20,7 @@ namespace BooksApi.DataBase.CQRS.TokenImpl
         public async Task HandleAsync(DeactivateTokenCommand handled)
         {
             await _context.Tokens
-                .Where(x => x.Id == handled.TokenId)
+                .Where(x => x.UserId == handled.UserId)
                 .UpdateAsync(x => new TokenDB
                 {
                     Id = x.Id,

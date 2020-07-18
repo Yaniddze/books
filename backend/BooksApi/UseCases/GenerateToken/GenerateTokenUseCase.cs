@@ -5,8 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using BooksApi.CQRS.Commands;
 using BooksApi.CQRS.Commands.Abstractions;
-using BooksApi.CQRS.Queries;
-using BooksApi.Entities;
 using BooksApi.Options;
 using BooksApi.UseCases.Abstractions;
 using FluentValidation;
@@ -18,15 +16,19 @@ namespace BooksApi.UseCases.GenerateToken
     {
         private readonly JwtOptions _jwtOptions;
         private readonly ICommandHandler<WriteTokenCommand> _commandHandler;
+        private readonly ICommandHandler<DeactivateTokenCommand> _deactivateCommandHandler;
 
         public GenerateTokenUseCase(
             JwtOptions jwtOptions,
             ICommandHandler<WriteTokenCommand> commandHandler,
-            IValidator<GenerateTokenRequest> validator
-        ) : base(validator)
+            IValidator<GenerateTokenRequest> validator, 
+            ICommandHandler<DeactivateTokenCommand> deactivateCommandHandler
+            ) 
+            : base(validator)
         {
             _jwtOptions = jwtOptions;
             _commandHandler = commandHandler;
+            _deactivateCommandHandler = deactivateCommandHandler;
         }
 
         protected override async Task<AbstractAnswer<string>> HandleAsync(
@@ -49,6 +51,11 @@ namespace BooksApi.UseCases.GenerateToken
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
+            await _deactivateCommandHandler.HandleAsync(new DeactivateTokenCommand
+            {
+                UserId = request.UserId,
+            });
+            
             var tempCommand = new WriteTokenCommand
             {
                 UserId = request.UserId,

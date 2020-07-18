@@ -1,7 +1,5 @@
 using System.Threading;
 using System.Threading.Tasks;
-using BooksApi.CQRS.Commands;
-using BooksApi.CQRS.Commands.Abstractions;
 using BooksApi.CQRS.Queries;
 using BooksApi.Entities;
 using BooksApi.UseCases.Abstractions;
@@ -12,17 +10,13 @@ namespace BooksApi.UseCases.RefreshToken
     public class RefreshTokenUseCase: AbstractUseCase<RefreshTokenRequest>
     {
         private readonly IFindQuery<Token> _finder;
-        private readonly ICommandHandler<DeactivateTokenCommand> _commandHandler;
-        
         public RefreshTokenUseCase(
             IValidator<RefreshTokenRequest> validator,
-            IFindQuery<Token> finder,
-            ICommandHandler<DeactivateTokenCommand> commandHandler
+            IFindQuery<Token> finder
             ) 
             : base(validator)
         {
             _finder = finder;
-            _commandHandler = commandHandler;
         }
 
         protected override async Task<AbstractAnswer> HandleAsync(
@@ -40,11 +34,6 @@ namespace BooksApi.UseCases.RefreshToken
             {
                 return CreateBadAnswer(new[] { "Token is not active" });
             }
-
-            await _commandHandler.HandleAsync(new DeactivateTokenCommand
-            {
-                TokenId = founded.Id
-            });
 
             return CreateSuccessAnswer();
         }
