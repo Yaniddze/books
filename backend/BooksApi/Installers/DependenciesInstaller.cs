@@ -16,6 +16,7 @@ using BooksApi.UseCases.GetAuthors;
 using BooksApi.UseCases.GetBooks;
 using BooksApi.UseCases.GetGenres;
 using BooksApi.UseCases.Login;
+using BooksApi.UseCases.RefreshToken;
 using BooksApi.UseCases.Register;
 using BooksApi.UseCases.UpdateBook;
 using FluentValidation;
@@ -39,6 +40,7 @@ namespace BooksApi.Installers
             services.AddTransient<IValidator<GetBooksRequest>, GetBooksRequestValidator>();
             services.AddTransient<IValidator<GetGenresRequest>, GetGenresRequestValidator>();
             services.AddTransient<IValidator<GenerateTokenRequest>, GenerateTokenRequestValidator>();
+            services.AddTransient<IValidator<RefreshTokenRequest>, RefreshTokenRequestValidator>();
 
             
             // Entity context provider
@@ -61,6 +63,7 @@ namespace BooksApi.Installers
             services.AddTransient<ICommandHandler<UpdateBookCommand>, UpdateBookCommandHandler>();
             services.AddTransient<ICommandHandler<AddUserCommand>, AddUserCommandHandler>();
             services.AddTransient<ICommandHandler<WriteTokenCommand>, WriteTokenCommandHandler>();
+            services.AddTransient<ICommandHandler<DeactivateTokenCommand>, DeactivateTokenCommandHandler>();
         }
     }
 }
