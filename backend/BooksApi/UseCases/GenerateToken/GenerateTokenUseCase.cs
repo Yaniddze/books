@@ -12,7 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace BooksApi.UseCases.GenerateToken
 {
-    public class GenerateTokenUseCase: AbstractUseCase<GenerateTokenRequest, string>
+    public class GenerateTokenUseCase: AbstractUseCase<GenerateTokenRequest, GenerateTokenAnswer>
     {
         private readonly JwtOptions _jwtOptions;
         private readonly ICommandHandler<WriteTokenCommand> _commandHandler;
@@ -31,7 +31,7 @@ namespace BooksApi.UseCases.GenerateToken
             _deactivateCommandHandler = deactivateCommandHandler;
         }
 
-        protected override async Task<AbstractAnswer<string>> HandleAsync(
+        protected override async Task<AbstractAnswer<GenerateTokenAnswer>> HandleAsync(
             GenerateTokenRequest request, CancellationToken cancellationToken
         )
         {
@@ -66,7 +66,11 @@ namespace BooksApi.UseCases.GenerateToken
 
             await _commandHandler.HandleAsync(tempCommand);
 
-            return CreateSuccessAnswer(tempCommand.Token);
+            return CreateSuccessAnswer(new GenerateTokenAnswer
+            {
+                RefreshId = tokenId,
+                Token = tempCommand.Token,
+            });
         }
     }
 }

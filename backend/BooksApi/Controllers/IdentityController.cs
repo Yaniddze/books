@@ -34,11 +34,8 @@ namespace BooksApi.Controllers
             
             var tokenAnswer = await _mediator.Send(new GenerateTokenRequest {UserId = loginResult.Data});
 
-            Response.Cookies.Append(
-                ".AspNetCore.Application.Id",
-                tokenAnswer.Data,
-                new CookieOptions{ MaxAge = TimeSpan.FromMinutes(60), Expires = DateTimeOffset.Now.AddMinutes(60)});
-            
+            AddAuthCookies(tokenAnswer.Data.Token, tokenAnswer.Data.RefreshId.ToString());
+
             return Ok(response);
         }
 
@@ -56,13 +53,22 @@ namespace BooksApi.Controllers
             
             var tokenAnswer = await _mediator.Send(new GenerateTokenRequest {UserId = registerResult.Data});
             
-            Response.Cookies.Append(
-                ".AspNetCore.Application.Id",
-                tokenAnswer.Data,
-                new CookieOptions{ MaxAge = TimeSpan.FromMinutes(60), Expires = DateTimeOffset.Now.AddMinutes(60)});
-
+            AddAuthCookies(tokenAnswer.Data.Token, tokenAnswer.Data.RefreshId.ToString());
             
             return Ok(response);
+        }
+
+        private void AddAuthCookies(string token, string refreshId)
+        {
+            Response.Cookies.Append(
+                ".AspNetCore.Application.Id",
+                token,
+                new CookieOptions{ MaxAge = TimeSpan.FromMinutes(60), Expires = DateTimeOffset.Now.AddMinutes(60)});
+            
+            Response.Cookies.Append(
+                ".AspNetCore.Application.Refresh",
+                refreshId,
+                new CookieOptions{ MaxAge = TimeSpan.FromMinutes(60), Expires = DateTimeOffset.Now.AddMinutes(60)});
         }
 
         [HttpPost("logout")]
