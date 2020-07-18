@@ -10,6 +10,11 @@ import { RegisterAnswer, RegisterInfo } from '../domain/register/types';
 
 export type FetchDataType<T> = () => Promise<T>;
 
+export type AbstractAnswer = {
+  success: boolean;
+  errors: string[];
+}
+
 type APIFetchDataType = {
   books: {
     fetch: FetchDataType<Books>;
@@ -26,6 +31,7 @@ type APIFetchDataType = {
   login: {
     fetch: (info: LoginInfo) => Promise<LoginAnswer>;
     logout: () => void;
+    refresh: () => Promise<AbstractAnswer>;
   };
   register: {
     fetch: (info: RegisterInfo) => Promise<RegisterAnswer>;
@@ -69,6 +75,8 @@ export const api: APIFetchDataType = {
     logout: (): void => {
       client.post('/identity/logout');
     },
+    refresh: (): Promise<AbstractAnswer> => client.post('/identity/refresh')
+      .then((result: AxiosResponse<AbstractAnswer>) => result.data),
   },
   register: {
     fetch: (info: RegisterInfo): Promise<RegisterAnswer> => client.post('/identity/register', info)
