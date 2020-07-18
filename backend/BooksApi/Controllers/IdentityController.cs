@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using BooksApi.UseCases.Abstractions;
 using BooksApi.UseCases.GenerateToken;
 using BooksApi.UseCases.Login;
+using BooksApi.UseCases.RefreshToken;
 using BooksApi.UseCases.Register;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -54,6 +55,21 @@ namespace BooksApi.Controllers
             response.Data = tokenAnswer.Data;
 
             return Ok(response);
+        }
+
+        [HttpPost("refresh")]
+        public async Task<IActionResult> RefreshAsync([FromBody] RefreshTokenRequest request)
+        {
+            var refreshResponse = await _mediator.Send(request);
+
+            if (!refreshResponse.Success) return Ok(refreshResponse);
+            
+            var generateTokenResponse = await _mediator.Send(new GenerateTokenRequest
+            {
+                UserId = refreshResponse.Data,
+            });
+
+            return Ok(generateTokenResponse);
         }
     }
 }
