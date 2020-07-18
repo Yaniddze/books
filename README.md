@@ -1,4 +1,7 @@
 # Books
+
+Пример простого CRUD-приложения на C# + React(TypeScript).
+
 Для запуска:
 1. Установить docker и docker-compose
 2. Перейти в папку с файлом "docker-compose.yaml"
