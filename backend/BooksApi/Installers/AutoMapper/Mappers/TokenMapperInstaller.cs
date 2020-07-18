@@ -20,6 +20,10 @@ namespace BooksApi.Installers.AutoMapper.Mappers
                 .ForMember(x => x.TokenValue,
                     map => map.MapFrom(
                         dest => dest.TokenValue
+                    ))
+                .ForMember(x => x.UserId,
+                    map => map.MapFrom(
+                        dest => dest.UserId
                     ));
 
             options.CreateMap<TokenDB, Token>()
@@ -34,6 +38,10 @@ namespace BooksApi.Installers.AutoMapper.Mappers
                 .ForMember(x => x.TokenValue,
                     map => map.MapFrom(
                         dest => dest.TokenValue
+                    ))
+                .ForMember(x => x.UserId,
+                    map => map.MapFrom(
+                        dest => dest.UserId
                     ));
         }
     }

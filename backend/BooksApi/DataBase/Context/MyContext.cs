@@ -62,6 +62,11 @@ namespace BooksApi.DataBase.Context
                 .HasOne(book => book.Genre)
                 .WithMany(author => author.Books)
                 .HasForeignKey(book => book.GenreId);
+
+            modelBuilder.Entity<TokenDB>()
+                .HasOne(token => token.User)
+                .WithMany(user => user.Tokens)
+                .HasForeignKey(token => token.UserId);
             
             #endregion
 
@@ -146,6 +151,9 @@ namespace BooksApi.DataBase.Context
                 .Property(x => x.Active)
                 .HasColumnName("active");
 
+            modelBuilder.Entity<TokenDB>()
+                .Property(x => x.UserId)
+                .HasColumnName("user_id");
             #endregion
 
             #endregion

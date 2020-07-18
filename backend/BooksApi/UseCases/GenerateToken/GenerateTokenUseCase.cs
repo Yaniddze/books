@@ -42,8 +42,7 @@ namespace BooksApi.UseCases.GenerateToken
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim("user_id", request.UserId.ToString()),
-                    new Claim("token_id", tokenId.ToString()),
+                    new Claim("id", request.UserId.ToString()),
                 }),
                 // Lifetime: 5 minutes by default
                 Expires = DateTime.UtcNow.AddMinutes(0.01),
@@ -62,6 +61,7 @@ namespace BooksApi.UseCases.GenerateToken
             {
                 Id = tokenId,
                 Token = tokenHandler.WriteToken(token),
+                UserId = request.UserId,
             };
 
             await _commandHandler.HandleAsync(tempCommand);

@@ -1,3 +1,4 @@
+using System;
 using BooksApi.Entities.Abstractions;
 
 namespace BooksApi.Entities
@@ -6,5 +7,6 @@ namespace BooksApi.Entities
     {
         public string TokenValue { get; set; }
         public bool Active { get; set; }
+        public Guid UserId { get; set; }
     }
 }

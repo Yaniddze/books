@@ -22,6 +22,7 @@ namespace BooksApi.DataBase.CQRS.TokenImpl
             {
                 Id = handled.Id,
                 TokenValue = handled.Token,
+                UserId = handled.UserId,
                 Active = true,
             });
 
