@@ -164,6 +164,10 @@ namespace BooksApi.DataBase.Context
                 .Property(x => x.UserId)
                 .HasColumnName("user_id");
 
+            modelBuilder.Entity<TokenDB>()
+                .Property(x => x.Active)
+                .HasColumnName("active");
+
             #endregion
 
             #endregion
