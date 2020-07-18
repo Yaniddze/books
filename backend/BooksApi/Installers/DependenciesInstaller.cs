@@ -11,6 +11,7 @@ using BooksApi.DataBase.CQRS.UserImpl;
 using BooksApi.Entities;
 using BooksApi.UseCases.AddBook;
 using BooksApi.UseCases.DeleteBooks;
+using BooksApi.UseCases.GenerateToken;
 using BooksApi.UseCases.GetAuthors;
 using BooksApi.UseCases.GetBooks;
 using BooksApi.UseCases.GetGenres;
@@ -37,6 +38,7 @@ namespace BooksApi.Installers
             services.AddTransient<IValidator<GetAuthorsRequest>, GetAuthorsRequestValidator>();
             services.AddTransient<IValidator<GetBooksRequest>, GetBooksRequestValidator>();
             services.AddTransient<IValidator<GetGenresRequest>, GetGenresRequestValidator>();
+            services.AddTransient<IValidator<GenerateTokenRequest>, GenerateTokenRequestValidator>();
 
             
             // Entity context provider
