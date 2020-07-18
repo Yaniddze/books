@@ -6,6 +6,6 @@ namespace BooksApi.UseCases.RefreshToken
 {
     public class RefreshTokenRequest: IRequest<AbstractAnswer<Guid>>
     {
-        public Guid OldTokenId { get; set; }
+        public Guid RefreshTokenId { get; set; }
     }
 }

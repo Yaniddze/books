@@ -24,7 +24,7 @@ namespace BooksApi.UseCases.RefreshToken
             RefreshTokenRequest request, CancellationToken cancellationToken
         )
         {
-            var founded = await _finder.FindOneAsync(x => x.Id == request.OldTokenId);
+            var founded = await _finder.FindOneAsync(x => x.Id == request.RefreshTokenId);
 
             if (founded == null)
             {
@@ -36,7 +36,7 @@ namespace BooksApi.UseCases.RefreshToken
                 return CreateBadAnswer(new[] { "Token is not active" });
             }
 
-            return CreateSuccessAnswer(founded.Id);
+            return CreateSuccessAnswer(founded.UserId);
         }
     }
 }

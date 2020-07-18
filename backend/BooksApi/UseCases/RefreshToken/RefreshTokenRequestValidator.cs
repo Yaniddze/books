@@ -6,7 +6,7 @@ namespace BooksApi.UseCases.RefreshToken
     {
         public RefreshTokenRequestValidator()
         {
-            RuleFor(x => x.OldTokenId)
+            RuleFor(x => x.RefreshTokenId)
                 .NotNull();
         }
     }

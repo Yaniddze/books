@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using BooksApi.UseCases.Abstractions;
 using BooksApi.UseCases.GenerateToken;
 using BooksApi.UseCases.Login;
+using BooksApi.UseCases.RefreshToken;
 using BooksApi.UseCases.Register;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -58,6 +59,60 @@ namespace BooksApi.Controllers
             return Ok(response);
         }
 
+        [HttpPost("refresh")]
+        public async Task<IActionResult> RefreshAsync()
+        {
+            Request.Cookies.TryGetValue(".AspNetCore.Application.Refresh", out var valueInCookie);
+
+            if (valueInCookie == null)
+            {
+                return Ok(new AbstractAnswer
+                {
+                    Success = false,
+                    Errors = new []{ "There is no refresh cookie" }
+                });
+            }
+
+            var refreshTokenId = Guid.Parse(valueInCookie);
+
+            var refreshResponse = await _mediator.Send(new RefreshTokenRequest
+            {
+                RefreshTokenId = refreshTokenId,
+            });
+
+            if (!refreshResponse.Success)
+            {
+                DeleteAuthCookies();
+                return Ok(new AbstractAnswer
+                {
+                    Success = false,
+                    Errors = refreshResponse.Errors,
+                });
+            }
+
+            var generateTokenResponse = await _mediator.Send(new GenerateTokenRequest
+            {
+                UserId = refreshResponse.Data,
+            });
+
+            AddAuthCookies(generateTokenResponse.Data.Token, generateTokenResponse.Data.RefreshId.ToString());
+            
+            return Ok(new AbstractAnswer
+            {
+                Success = true,
+            });
+        }
+
+        [HttpPost("logout")]
+        public IActionResult Logout()
+        {
+            DeleteAuthCookies();
+            return Ok(new AbstractAnswer
+            {
+                Success = true,
+            });
+        }
+
         private void AddAuthCookies(string token, string refreshId)
         {
             Response.Cookies.Append(
@@ -71,11 +126,11 @@ namespace BooksApi.Controllers
                 new CookieOptions{ MaxAge = TimeSpan.FromMinutes(60), Expires = DateTimeOffset.Now.AddMinutes(60)});
         }
 
-        [HttpPost("logout")]
-        public IActionResult Logout()
+        private void DeleteAuthCookies()
         {
             Response.Cookies.Delete(".AspNetCore.Application.Id");
-            return Ok();
+            Response.Cookies.Delete(".AspNetCore.Application.Refresh");
+
         }
     }
 }
