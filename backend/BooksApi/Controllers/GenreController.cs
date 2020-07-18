@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using BooksApi.Controllers.Abstractions;
 using BooksApi.UseCases.GetGenres;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -8,8 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BooksApi.Controllers
 {
     [Route("api/v1/genre")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public class GenreController: Controller
+    public class GenreController: AuthorizedController
     {
         private readonly IMediator _mediator;
 

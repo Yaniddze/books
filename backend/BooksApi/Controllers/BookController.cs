@@ -1,18 +1,16 @@
 using System.Threading.Tasks;
+using BooksApi.Controllers.Abstractions;
 using BooksApi.UseCases.AddBook;
 using BooksApi.UseCases.DeleteBooks;
 using BooksApi.UseCases.GetBooks;
 using BooksApi.UseCases.UpdateBook;
 using MediatR;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BooksApi.Controllers
 {
     [Route("api/v1/book")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public class BookController: Controller
+    public class BookController: AuthorizedController
     {
         private readonly IMediator _mediator;
 
