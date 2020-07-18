@@ -61,9 +61,6 @@ namespace BooksApi.UseCases.GenerateToken
             var tempCommand = new WriteTokenCommand
             {
                 Id = tokenId,
-                UserId = request.UserId,
-                ExpiryDate = DateTime.UtcNow.AddYears(2),
-                JwtId = token.Id,
                 Token = tokenHandler.WriteToken(token),
             };
 

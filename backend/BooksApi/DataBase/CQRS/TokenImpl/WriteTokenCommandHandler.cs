@@ -21,11 +21,8 @@ namespace BooksApi.DataBase.CQRS.TokenImpl
             _context.Tokens.Add(new TokenDB
             {
                 Id = handled.Id,
-                CreationDate = DateTime.UtcNow,
-                ExpiryDate = handled.ExpiryDate,
-                JwtId = handled.JwtId,
                 TokenValue = handled.Token,
-                UserId = handled.UserId,
+                Active = true,
             });
 
             await _context.SaveChangesAsync();

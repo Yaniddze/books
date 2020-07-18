@@ -36,7 +36,7 @@ namespace BooksApi.UseCases.RefreshToken
                 return CreateBadAnswer(new[] { "Token is not active" });
             }
 
-            return CreateSuccessAnswer(founded.UserId);
+            return CreateSuccessAnswer(founded.Id);
         }
     }
 }

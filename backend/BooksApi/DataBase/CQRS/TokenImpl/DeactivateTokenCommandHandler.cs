@@ -19,12 +19,12 @@ namespace BooksApi.DataBase.CQRS.TokenImpl
 
         public async Task HandleAsync(DeactivateTokenCommand handled)
         {
-            await _context.Tokens
-                .Where(x => x.UserId == handled.UserId)
-                .UpdateAsync(x => new TokenDB
-                {
-                    Active = false,
-                });
+//            await _context.Tokens
+//                .Where(x => x.UserId == handled.UserId)
+//                .UpdateAsync(x => new TokenDB
+//                {
+//                    Active = false,
+//                });
         }
     }
 }
