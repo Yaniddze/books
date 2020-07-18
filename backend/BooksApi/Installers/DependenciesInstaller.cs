@@ -52,6 +52,7 @@ namespace BooksApi.Installers
             services.AddTransient<IFindQuery<Genre>, FindGenreQuery>();
             services.AddTransient<IFindQuery<Book>, FindBookQuery>();
             services.AddTransient<IFindQuery<User>, FindUserQuery>();
+            services.AddTransient<IFindQuery<Token>, FindTokenQuery>();
             services.AddTransient<IGetAllQuery<Book>, GetAllBooks>();
             services.AddTransient<IGetAllQuery<Author>, GetAllAuthors>();
             services.AddTransient<IGetAllQuery<Genre>, GetAllGenres>();
