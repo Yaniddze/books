@@ -25,6 +25,7 @@ type APIFetchDataType = {
   };
   login: {
     fetch: (info: LoginInfo) => Promise<LoginAnswer>;
+    logout: () => void;
   };
   register: {
     fetch: (info: RegisterInfo) => Promise<RegisterAnswer>;
@@ -65,6 +66,9 @@ export const api: APIFetchDataType = {
   login: {
     fetch: (info: LoginInfo): Promise<LoginAnswer> => client.post('/identity/login', info)
       .then((result: AxiosResponse<LoginAnswer>) => result.data),
+    logout: (): void => {
+      client.post('/identity/logout');
+    },
   },
   register: {
     fetch: (info: RegisterInfo): Promise<RegisterAnswer> => client.post('/identity/register', info)

@@ -99,5 +99,12 @@ namespace BooksApi.Controllers
 
             return Ok(generateTokenResponse);
         }
+
+        [HttpPost("logout")]
+        public async Task<IActionResult> LogoutAsync()
+        {
+            Response.Cookies.Delete(".AspNetCore.Application.Id");
+            return Ok();
+        }
     }
 }

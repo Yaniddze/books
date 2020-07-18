@@ -29,7 +29,7 @@ export function loginReducer(state = initialState, action: LoginActions): LoginS
         data: {
           errors: [],
           success: true,
-          data: true,
+          data: false,
         },
       };
     case LOGIN_ERROR:

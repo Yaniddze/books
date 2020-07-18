@@ -9,6 +9,7 @@ import {
   BookUpdateAsyncAction,
   BookToUpdate,
 } from '../../types';
+import { logout } from '../../../login/actions';
 
 // API
 import { api } from '../../../../api';
@@ -35,7 +36,7 @@ export function* makeRequest(body: BookToUpdate): SagaIterator {
       }));
     }
   } catch (e) {
-    // TODO create handle
+    yield put(logout());
   }
 }
 

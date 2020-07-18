@@ -7,6 +7,7 @@ import { api } from '../../../../api';
 // Types
 import { BookDeleteState, BooksDeleteAsyncAction } from '../../types';
 import { booksDeleteSuccess } from '../../actions';
+import { logout } from '../../../login/actions';
 
 function* makeRequest(ids: string[]): SagaIterator {
   try {
@@ -16,7 +17,7 @@ function* makeRequest(ids: string[]): SagaIterator {
       yield put(booksDeleteSuccess(ids));
     }
   } catch {
-    // TODO create handle
+    yield put(logout());
   }
 }
 

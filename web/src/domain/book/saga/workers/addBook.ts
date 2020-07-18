@@ -8,6 +8,7 @@ import {
 // API
 import { api } from '../../../../api';
 import { BookAddAsyncAction, BookAddState, BookToAdd } from '../../types';
+import { logout } from '../../../login/actions';
 
 export function* makeRequest(body: BookToAdd): SagaIterator {
   try {
@@ -31,7 +32,7 @@ export function* makeRequest(body: BookToAdd): SagaIterator {
       }));
     }
   } catch (e) {
-    // TODO create handle
+    yield put(logout());
   }
 }
 
