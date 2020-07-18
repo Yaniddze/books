@@ -1,24 +1,18 @@
-import { call, put } from 'redux-saga/effects';
-import { SagaIterator } from '@redux-saga/core';
-
 // API
 import { api } from '../../../../api';
 
+import { makeRequestSingle } from '../../../../workers';
+
 // Types
-import { BookDeleteState, BooksDeleteAsyncAction } from '../../types';
+import { BooksDeleteAsyncAction } from '../../types';
 import { booksDeleteSuccess } from '../../actions';
-import { logout } from '../../../login/actions';
 
-function* makeRequest(ids: string[]): SagaIterator {
-  try {
-    const result: BookDeleteState = yield call(api.books.delete, ids);
-
-    if (result.success) {
-      yield put(booksDeleteSuccess(ids));
-    }
-  } catch {
-    yield put(logout());
-  }
+function* makeRequest(ids: string[]): Generator {
+  yield makeRequestSingle({
+    fetcher: api.books.delete,
+    fetcherParam: ids,
+    onSuccess: () => booksDeleteSuccess(ids),
+  });
 }
 
 export function* deleteBooks(action: BooksDeleteAsyncAction): Generator {
