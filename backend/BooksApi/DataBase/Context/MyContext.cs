@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using BooksApi.DataBase.Entities;
 using Microsoft.EntityFrameworkCore;

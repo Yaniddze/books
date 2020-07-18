@@ -26,7 +26,7 @@ namespace BooksApi.Controllers.Abstractions
             var result = new AbstractAnswer<string>
             {
                 Success = true,
-                Data = newToken.Token,
+                Data = newToken.Data,
             };
             
             return result;

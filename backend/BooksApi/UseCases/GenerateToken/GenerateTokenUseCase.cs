@@ -6,23 +6,30 @@ using System.Threading.Tasks;
 using BooksApi.CQRS.Commands;
 using BooksApi.CQRS.Commands.Abstractions;
 using BooksApi.Options;
-using MediatR;
+using BooksApi.UseCases.Abstractions;
+using FluentValidation;
 using Microsoft.IdentityModel.Tokens;
 
 namespace BooksApi.UseCases.GenerateToken
 {
-    public class GenerateTokenUseCase: IRequestHandler<GenerateTokenRequest, GenerateTokenAnswer>
+    public class GenerateTokenUseCase: AbstractUseCase<GenerateTokenRequest, string>
     {
         private readonly JwtOptions _jwtOptions;
         private readonly ICommandHandler<WriteTokenCommand> _commandHandler;
 
-        public GenerateTokenUseCase(JwtOptions jwtOptions, ICommandHandler<WriteTokenCommand> commandHandler)
+        public GenerateTokenUseCase(
+            JwtOptions jwtOptions,
+            ICommandHandler<WriteTokenCommand> commandHandler,
+            IValidator<GenerateTokenRequest> validator
+        ) : base(validator)
         {
             _jwtOptions = jwtOptions;
             _commandHandler = commandHandler;
         }
 
-        public async Task<GenerateTokenAnswer> Handle(GenerateTokenRequest request, CancellationToken cancellationToken)
+        protected override async Task<AbstractAnswer<string>> HandleAsync(
+            GenerateTokenRequest request, CancellationToken cancellationToken
+        )
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -49,10 +56,7 @@ namespace BooksApi.UseCases.GenerateToken
 
             await _commandHandler.HandleAsync(tempCommand);
 
-            return new GenerateTokenAnswer
-            {
-                Token = tempCommand.Token,
-            };
+            return CreateSuccessAnswer(tempCommand.Token);
         }
     }
 }
