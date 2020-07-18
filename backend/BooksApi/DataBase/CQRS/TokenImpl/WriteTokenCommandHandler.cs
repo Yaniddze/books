@@ -20,7 +20,7 @@ namespace BooksApi.DataBase.CQRS.TokenImpl
         {
             _context.Tokens.Add(new TokenDB
             {
-                Id = Guid.NewGuid(),
+                Id = handled.Id,
                 CreationDate = DateTime.UtcNow,
                 ExpiryDate = handled.ExpiryDate,
                 JwtId = handled.JwtId,
