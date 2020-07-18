@@ -5,6 +5,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using BooksApi.CQRS.Commands;
 using BooksApi.CQRS.Commands.Abstractions;
+using BooksApi.CQRS.Queries;
+using BooksApi.Entities;
 using BooksApi.Options;
 using BooksApi.UseCases.Abstractions;
 using FluentValidation;
@@ -31,6 +33,7 @@ namespace BooksApi.UseCases.GenerateToken
             GenerateTokenRequest request, CancellationToken cancellationToken
         )
         {
+            
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenDescriptor = new SecurityTokenDescriptor
             {
