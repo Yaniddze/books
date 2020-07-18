@@ -2,8 +2,6 @@ using System.Threading.Tasks;
 using BooksApi.Controllers.Abstractions;
 using BooksApi.UseCases.GetGenres;
 using MediatR;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BooksApi.Controllers
