@@ -24,7 +24,7 @@ function* makeRequest(loginInfo: LoginInfo): SagaIterator {
     const result: LoginAnswer = yield call(api.login.fetch, loginInfo);
 
     if (result.success) {
-      yield put(success(result.data));
+      yield put(success());
     } else {
       yield put(error(result.errors));
     }

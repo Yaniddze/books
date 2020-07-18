@@ -1,5 +1,3 @@
-// Core
-import Cookies from 'js-cookie';
 // Types
 import {
   LOGIN_ASYNC,
@@ -18,32 +16,30 @@ const initialState: LoginState = {
   data: {
     errors: [],
     success: false,
-    data: Cookies.get('token') || '',
+    data: true,
   },
 };
 
 export function loginReducer(state = initialState, action: LoginActions): LoginState {
   switch (action.type) {
     case LOGIN_START:
-      Cookies.set('token', '');
       return {
         ...state,
         isFetching: true,
         data: {
           errors: [],
           success: true,
-          data: '',
+          data: true,
         },
       };
     case LOGIN_ERROR:
-      Cookies.set('token', '');
       return {
         ...state,
         isFetching: false,
         data: {
           errors: action.payload,
           success: false,
-          data: '',
+          data: false,
         },
       };
     case LOGIN_FINISH:
@@ -52,23 +48,21 @@ export function loginReducer(state = initialState, action: LoginActions): LoginS
         isFetching: false,
       };
     case LOGIN_SUCCESS:
-      Cookies.set('token', action.payload);
       return {
         ...state,
         isFetching: false,
         data: {
           success: true,
           errors: [],
-          data: action.payload,
+          data: true,
         },
       };
     case LOGOUT:
-      Cookies.set('token', '');
       return {
         ...state,
         data: {
           ...state.data,
-          data: '',
+          data: false,
         },
       };
     case LOGIN_CLEAN:

@@ -5,7 +5,7 @@ export type LoginState = {
 
 export type LoginAnswer = {
   success: boolean;
-  data: string;
+  data: boolean;
   errors: string[];
 }
 
@@ -27,7 +27,6 @@ type LoginFinishAction = {
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export type LoginSuccessAction = {
   type: typeof LOGIN_SUCCESS;
-  payload: string; // Token
 }
 
 export const LOGIN_ERROR = 'LOGIN_ERROR';

@@ -5,6 +5,7 @@ import { put, call } from 'redux-saga/effects';
 
 // Common types
 import { FillActionType, ErrorActionType } from '../types';
+import { logout } from '../domain/login/actions';
 
 type OptionsType<T> = {
   fetcher: (uri?: string) => Promise<T>;
@@ -27,6 +28,7 @@ export function* makeRequest<T>(options: OptionsType<T>): SagaIterator {
 
     yield put(fill(result));
   } catch (e) {
+    yield put(logout());
     yield put(error([e.message]));
   } finally {
     yield put(finish());

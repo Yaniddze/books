@@ -32,10 +32,9 @@ export function error(payload: string[]): LoginErrorAction {
   };
 }
 
-export function success(payload: string): LoginSuccessAction {
+export function success(): LoginSuccessAction {
   return {
     type: LOGIN_SUCCESS,
-    payload,
   };
 }
 

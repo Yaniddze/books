@@ -15,13 +15,11 @@ import { makeRequest } from '../../../../workers';
 import { api } from '../../../../api';
 
 export function* fetchAuthors(): Generator {
-  const options = {
-    fetcher: api.authors.fetch,
+  yield yield makeRequest<Authors>({
     start,
     finish,
-    fill,
     error,
-  };
-
-  yield makeRequest<Authors>(options);
+    fill,
+    fetcher: api.authors.fetch,
+  });
 }

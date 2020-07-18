@@ -14,7 +14,7 @@ type PropTypes = {
 export const Header: FC<PropTypes> = ({ children }: PropTypes) => {
   const loginState = useLoginState();
   const logoutFetch = useLogoutFetch();
-  const logoutBtn = loginState.data.data !== '' && (
+  const logoutBtn = loginState.data.data && (
     <button
       className={styles.logoutBtn}
       type="submit"

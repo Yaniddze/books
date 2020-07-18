@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace BooksApi.Controllers
 {
@@ -18,10 +19,12 @@ namespace BooksApi.Controllers
     public class IdentityController: Controller
     {
         private readonly IMediator _mediator;
+//        private readonly ILogger _logger;
 
         public IdentityController(IMediator mediator)
         {
             _mediator = mediator;
+//            _logger = logger;
         }
 
         [HttpPost("login")]
@@ -40,10 +43,11 @@ namespace BooksApi.Controllers
 
 //            response.Data = tokenAnswer.Data;
 
-            HttpContext.Response.Cookies.Append(
+            Response.Cookies.Append(
                 ".AspNetCore.Application.Id",
                 tokenAnswer.Data,
-                new CookieOptions{ MaxAge = TimeSpan.FromMinutes(60) });
+                new CookieOptions{ MaxAge = TimeSpan.FromMinutes(60), Expires = DateTimeOffset.Now.AddMinutes(60)});
+            
             return Ok(response);
         }
 

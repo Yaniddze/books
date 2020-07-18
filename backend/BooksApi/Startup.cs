@@ -69,12 +69,12 @@ namespace BooksApi
             {
                 MinimumSameSitePolicy = SameSiteMode.Strict,
                 HttpOnly = HttpOnlyPolicy.Always,
-                Secure = CookieSecurePolicy.Always,
+//                Secure = CookieSecurePolicy.Always,
             });
 
             app.Use(async (context, next) =>
             {
-                var token = context.Request.Cookies[".AspNetCore.Application.Id"];
+                context.Request.Cookies.TryGetValue(".AspNetCore.Application.Id", out var token);
                 if (!string.IsNullOrEmpty(token))
                     context.Request.Headers.Add("Authorization", "Bearer " + token);
 

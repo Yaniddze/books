@@ -17,13 +17,11 @@ import { makeRequest } from '../../../../workers';
 import { api } from '../../../../api';
 
 export function* fetchGenres(): Generator {
-  const options = {
-    fetcher: api.genres.fetch,
+  yield makeRequest<Genres>({
     start,
-    finish,
     fill,
+    finish,
     error,
-  };
-
-  yield makeRequest<Genres>(options);
+    fetcher: api.genres.fetch,
+  });
 }
