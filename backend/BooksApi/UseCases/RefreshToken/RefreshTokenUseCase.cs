@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using BooksApi.CQRS.Queries;
@@ -7,7 +8,7 @@ using FluentValidation;
 
 namespace BooksApi.UseCases.RefreshToken
 {
-    public class RefreshTokenUseCase: AbstractUseCase<RefreshTokenRequest>
+    public class RefreshTokenUseCase: AbstractUseCase<RefreshTokenRequest, Guid>
     {
         private readonly IFindQuery<Token> _finder;
         public RefreshTokenUseCase(
@@ -19,7 +20,7 @@ namespace BooksApi.UseCases.RefreshToken
             _finder = finder;
         }
 
-        protected override async Task<AbstractAnswer> HandleAsync(
+        protected override async Task<AbstractAnswer<Guid>> HandleAsync(
             RefreshTokenRequest request, CancellationToken cancellationToken
         )
         {
@@ -35,7 +36,7 @@ namespace BooksApi.UseCases.RefreshToken
                 return CreateBadAnswer(new[] { "Token is not active" });
             }
 
-            return CreateSuccessAnswer();
+            return CreateSuccessAnswer(founded.UserId);
         }
     }
 }
