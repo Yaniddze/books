@@ -16,7 +16,7 @@ namespace BooksApi.Controllers.Abstractions
         protected async Task<AbstractAnswer<string>> GenerateNewToken(IMediator mediator)
         {
             var userToken = HttpContext.User;
-            var userId = userToken.Claims.First(x => x.Type == "id").Value;
+            var userId = userToken.Claims.First(x => x.Type == "user_id").Value;
 
             var newToken = await mediator.Send(new GenerateTokenRequest
             {

@@ -2,7 +2,9 @@ using BooksApi.DataBase.Context;
 using BooksApi.Installers;
 using BooksApi.Options;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -56,11 +58,31 @@ namespace BooksApi
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
 
-            app.UseCors(x =>
+            app.UseCors(x => x
+                .WithOrigins("http://localhost:3000")
+                .AllowCredentials()
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+            );
+
+            app.UseCookiePolicy(new CookiePolicyOptions
             {
-                x.AllowAnyHeader();
-                x.AllowAnyMethod();
-                x.AllowAnyOrigin();
+                MinimumSameSitePolicy = SameSiteMode.Strict,
+                HttpOnly = HttpOnlyPolicy.Always,
+                Secure = CookieSecurePolicy.Always,
+            });
+
+            app.Use(async (context, next) =>
+            {
+                var token = context.Request.Cookies[".AspNetCore.Application.Id"];
+                if (!string.IsNullOrEmpty(token))
+                    context.Request.Headers.Add("Authorization", "Bearer " + token);
+
+                context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
+                context.Response.Headers.Add("X-Xss-Protection", "1");
+                context.Response.Headers.Add("X-Frame-Options", "DENY");
+                
+                await next();
             });
 
             app.UseAuthorization();

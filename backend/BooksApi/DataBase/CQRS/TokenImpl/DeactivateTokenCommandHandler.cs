@@ -23,13 +23,7 @@ namespace BooksApi.DataBase.CQRS.TokenImpl
                 .Where(x => x.UserId == handled.UserId)
                 .UpdateAsync(x => new TokenDB
                 {
-                    Id = x.Id,
                     Active = false,
-                    CreationDate = x.CreationDate,
-                    ExpiryDate = x.ExpiryDate,
-                    JwtId = x.JwtId,
-                    TokenValue = x.TokenValue,
-                    UserId = x.UserId,
                 });
         }
     }

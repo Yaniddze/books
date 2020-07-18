@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using BooksApi.UseCases.Abstractions;
 using BooksApi.UseCases.GenerateToken;
@@ -5,6 +7,9 @@ using BooksApi.UseCases.Login;
 using BooksApi.UseCases.RefreshToken;
 using BooksApi.UseCases.Register;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BooksApi.Controllers
@@ -33,8 +38,12 @@ namespace BooksApi.Controllers
             
             var tokenAnswer = await _mediator.Send(new GenerateTokenRequest {UserId = loginResult.Data});
 
-            response.Data = tokenAnswer.Data;
+//            response.Data = tokenAnswer.Data;
 
+            HttpContext.Response.Cookies.Append(
+                ".AspNetCore.Application.Id",
+                tokenAnswer.Data,
+                new CookieOptions{ MaxAge = TimeSpan.FromMinutes(60) });
             return Ok(response);
         }
 
@@ -58,9 +67,24 @@ namespace BooksApi.Controllers
         }
 
         [HttpPost("refresh")]
-        public async Task<IActionResult> RefreshAsync([FromBody] RefreshTokenRequest request)
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> RefreshAsync()
         {
-            var refreshResponse = await _mediator.Send(request);
+            var tokenId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == "token_id")?.Value;
+
+            if (tokenId == null)
+            {
+                return Ok(new AbstractAnswer<string>
+                {
+                    Success = false,
+                    Errors = new[] { "Bad token" }
+                });
+            }
+            
+            var refreshResponse = await _mediator.Send(new RefreshTokenRequest
+            {
+                OldTokenId = Guid.Parse(tokenId),
+            });
 
             if (!refreshResponse.Success) return Ok(refreshResponse);
             

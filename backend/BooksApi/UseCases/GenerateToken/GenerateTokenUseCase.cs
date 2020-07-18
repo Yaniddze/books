@@ -35,13 +35,15 @@ namespace BooksApi.UseCases.GenerateToken
             GenerateTokenRequest request, CancellationToken cancellationToken
         )
         {
+            var tokenId = Guid.NewGuid();
             
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim("id", request.UserId.ToString()),
+                    new Claim("user_id", request.UserId.ToString()),
+                    new Claim("token_id", tokenId.ToString()),
                 }),
                 // Lifetime: 5 minutes by default
                 Expires = DateTime.UtcNow.AddMinutes(0.01),
@@ -58,6 +60,7 @@ namespace BooksApi.UseCases.GenerateToken
             
             var tempCommand = new WriteTokenCommand
             {
+                Id = tokenId,
                 UserId = request.UserId,
                 ExpiryDate = DateTime.UtcNow.AddYears(2),
                 JwtId = token.Id,
