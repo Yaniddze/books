@@ -9,6 +9,7 @@ namespace BooksApi.Entities
         public Guid UserId { get; set; }
         public DateTime ExpiryDate { get; set; }
         public DateTime CreationDate { get; set; }
+        public bool Active { get; set; }
         public string JwtId { get; set; }
     }
 }
