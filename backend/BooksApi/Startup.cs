@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using BooksApi.DataBase.Context;
 using BooksApi.Installers;
 using BooksApi.Options;
@@ -10,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace BooksApi
 {
@@ -29,7 +32,7 @@ namespace BooksApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -85,6 +88,10 @@ namespace BooksApi
                 await next();
             });
 
+            var path = Directory.GetCurrentDirectory();
+            Console.WriteLine(path);
+            loggerFactory.AddFile($"{path}/Logs/log.txt");
+            
             app.UseAuthorization();
             app.UseAuthentication();
 

@@ -8,6 +8,7 @@ using BooksApi.UseCases.Register;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace BooksApi.Controllers
 {
@@ -15,10 +16,12 @@ namespace BooksApi.Controllers
     public class IdentityController: Controller
     {
         private readonly IMediator _mediator;
+        private readonly ILogger<IdentityController> _logger;
 
-        public IdentityController(IMediator mediator)
+        public IdentityController(IMediator mediator, ILogger<IdentityController> logger)
         {
             _mediator = mediator;
+            _logger = logger;
         }
 
         [HttpPost("login")]
@@ -36,6 +39,9 @@ namespace BooksApi.Controllers
             var tokenAnswer = await _mediator.Send(new GenerateTokenRequest {UserId = loginResult.Data});
 
             AddAuthCookies(tokenAnswer.Data.Token, tokenAnswer.Data.RefreshId.ToString());
+            
+            _logger.LogInformation(
+                $"user {request.Login} has entered with refresh id ${tokenAnswer.Data.RefreshId}");
 
             return Ok(response);
         }
@@ -55,6 +61,9 @@ namespace BooksApi.Controllers
             var tokenAnswer = await _mediator.Send(new GenerateTokenRequest {UserId = registerResult.Data});
             
             AddAuthCookies(tokenAnswer.Data.Token, tokenAnswer.Data.RefreshId.ToString());
+            
+            _logger.LogInformation(
+                $"user ${request.Login} registered and entered with refresh id ${tokenAnswer.Data.RefreshId}");
             
             return Ok(response);
         }
@@ -96,6 +105,9 @@ namespace BooksApi.Controllers
             });
 
             AddAuthCookies(generateTokenResponse.Data.Token, generateTokenResponse.Data.RefreshId.ToString());
+            
+            _logger.LogInformation(
+                $"refresh id ${valueInCookie} refreshed with to ${generateTokenResponse.Data.RefreshId}");
             
             return Ok(new AbstractAnswer
             {

@@ -1,6 +1,7 @@
 */.idea
 /backend/*/bin
 /backend/*/obj
+/backend/BooksApi/Logs
 
 # dependencies
 web/node_modules
