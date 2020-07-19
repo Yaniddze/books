@@ -21,5 +21,24 @@ namespace BooksApi.UnitTests
                 .CreateMany(count)
                 .ToList();
         }
+        
+        public static List<GenreDB> GenerateGenres(int count)
+        {
+            return Fixture.Build<GenreDB>()
+                .With(x => x.Books, new List<BookDB>())
+                .CreateMany(count)
+                .ToList();
+        }
+        
+        public static List<BookDB> GenerateBooks(int count, AuthorDB author, GenreDB genre)
+        {
+            return Fixture.Build<BookDB>()
+                .With(x => x.Author, author)
+                .With(x => x.AuthorId, author.Id)
+                .With(x => x.Genre, genre)
+                .With(x => x.GenreId, genre.Id)
+                .CreateMany(count)
+                .ToList();
+        }
     }
 }
