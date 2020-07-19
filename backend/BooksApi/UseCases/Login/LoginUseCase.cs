@@ -25,7 +25,7 @@ namespace BooksApi.UseCases.Login
 
             if (foundedUser == null)
             {
-                return CreateBadAnswer(new[] {"User with this login and email not found."});
+                return CreateBadAnswer(new[] {"User not found."});
             }
 
             return CreateSuccessAnswer(foundedUser.Id);
