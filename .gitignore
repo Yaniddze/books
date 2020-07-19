@@ -2,6 +2,7 @@
 /backend/*/bin
 /backend/*/obj
 /backend/BooksApi/Logs
+/Logs
 
 # dependencies
 web/node_modules

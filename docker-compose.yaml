@@ -11,15 +11,17 @@ services:
   #   depends_on:
   #     - backend
 
-  # backend:
-  #   build: ./backend/BooksApi
-  #   restart: always
-  #   ports:
-  #     - "8088:80"
-  #   depends_on:
-  #     - postgres
-  #   environment:
-  #     - CONNECTION_STRING=host=postgres;port=5432;database=books;username=postgres;password=postgres
+  backend:
+    build: ./backend/BooksApi
+    restart: always
+    volumes:
+      - ./Logs:/app/Logs
+    ports:
+      - "8088:80"
+    depends_on:
+      - postgres
+    environment:
+      - CONNECTION_STRING=host=postgres;port=5432;database=books;username=postgres;password=postgres
 
   postgres:
     image: postgres:latest
