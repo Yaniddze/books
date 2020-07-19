@@ -2,14 +2,14 @@ version: "3.7"
 
 services:
 
-  # web:
-  #   build: ./web
-  #   restart: always
-  #   ports:
-  #     - "8089:3000"
-  #   stdin_open: true
-  #   depends_on:
-  #     - backend
+  web:
+    build: ./web
+    restart: always
+    ports:
+      - "8089:3000"
+    stdin_open: true
+    depends_on:
+      - backend
 
   backend:
     build: ./backend/BooksApi
@@ -26,8 +26,8 @@ services:
   postgres:
     image: postgres:latest
     restart: always
-    ports: 
-      - "8090:5432"
+    # ports: 
+    #   - "8090:5432"
     volumes:
       - ./database/data:/var/lib/postgresql/data
       - ./database/scripts/seed.sql:/docker-entrypoint-initdb.d/seed.sql

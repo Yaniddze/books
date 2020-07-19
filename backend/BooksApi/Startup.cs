@@ -62,7 +62,7 @@ namespace BooksApi
             });
 
             app.UseCors(x => x
-                .WithOrigins("http://localhost:3000")
+                .WithOrigins("http://localhost:8089")
                 .AllowCredentials()
                 .AllowAnyHeader()
                 .AllowAnyMethod()
