@@ -46,6 +46,10 @@ namespace BooksApi.Controllers
 
             var principal = GeneratePrincipal(loginResult.Data, generateTokenResult.Data);
 
+            _logger.LogInformation(
+                $"user {request.Login} login and entered with refresh id {generateTokenResult.Data}");
+
+            
             await HttpContext.SignInAsync(principal);
             
             return Ok(response);
