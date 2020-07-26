@@ -1,6 +1,4 @@
 using System;
-using BooksApi.CQRS.Commands;
-using BooksApi.CQRS.Commands.Abstractions;
 using BooksApi.CQRS.Queries;
 using BooksApi.DataBase.Context;
 using BooksApi.DataBase.CQRS.AuthorImpl;
@@ -11,7 +9,6 @@ using BooksApi.DataBase.CQRS.UserImpl;
 using BooksApi.Entities;
 using BooksApi.UseCases.AddBook;
 using BooksApi.UseCases.DeleteBooks;
-using BooksApi.UseCases.GenerateToken;
 using BooksApi.UseCases.GetAuthors;
 using BooksApi.UseCases.GetBooks;
 using BooksApi.UseCases.GetGenres;
@@ -39,7 +36,6 @@ namespace BooksApi.Installers
             services.AddTransient<IValidator<GetAuthorsRequest>, GetAuthorsRequestValidator>();
             services.AddTransient<IValidator<GetBooksRequest>, GetBooksRequestValidator>();
             services.AddTransient<IValidator<GetGenresRequest>, GetGenresRequestValidator>();
-            services.AddTransient<IValidator<GenerateTokenRequest>, GenerateTokenRequestValidator>();
             services.AddTransient<IValidator<RefreshTokenRequest>, RefreshTokenRequestValidator>();
 
             
@@ -58,12 +54,6 @@ namespace BooksApi.Installers
             services.AddTransient<IGetAllQuery<Book>, GetAllBooks>();
             services.AddTransient<IGetAllQuery<Author>, GetAllAuthors>();
             services.AddTransient<IGetAllQuery<Genre>, GetAllGenres>();
-            services.AddTransient<ICommandHandler<AddBookCommand>, AddBookCommandHandler>();
-            services.AddTransient<ICommandHandler<DeleteBooksCommand>, DeleteBookCommandHandler>();
-            services.AddTransient<ICommandHandler<UpdateBookCommand>, UpdateBookCommandHandler>();
-            services.AddTransient<ICommandHandler<AddUserCommand>, AddUserCommandHandler>();
-            services.AddTransient<ICommandHandler<WriteTokenCommand>, WriteTokenCommandHandler>();
-            services.AddTransient<ICommandHandler<DeactivateTokenCommand>, DeactivateTokenCommandHandler>();
         }
     }
 }

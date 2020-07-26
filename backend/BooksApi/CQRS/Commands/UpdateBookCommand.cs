@@ -1,9 +1,9 @@
 using System;
-using BooksApi.CQRS.Commands.Abstractions;
+using MediatR;
 
 namespace BooksApi.CQRS.Commands
 {
-    public class UpdateBookCommand: ICommand
+    public class UpdateBookCommand: IRequest
     {
         public Guid BookId { get; set; }
         public int NewYear { get; set; }

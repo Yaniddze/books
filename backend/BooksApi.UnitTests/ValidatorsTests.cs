@@ -165,11 +165,11 @@ namespace BooksApi.UnitTests
             "41faf1b4-b28c-4985-b8f2-fa6b798bcdd1"
         )]
         public async Task update_book_validation_success(
-            string bookId,
+            Guid bookId,
             int newYear,
             string newTitle,
-            string newAuthorId,
-            string newGenereId
+            Guid newAuthorId,
+            Guid newGenreId
         )
         {
             var request = new UpdateBookRequest
@@ -177,7 +177,7 @@ namespace BooksApi.UnitTests
                 BookId = bookId,
                 NewTitle = newTitle,
                 NewAuthorId = newAuthorId,
-                NewGenreId = newGenereId,
+                NewGenreId = newGenreId,
                 NewYear = newYear
             };
             
@@ -226,11 +226,11 @@ namespace BooksApi.UnitTests
             "8e60cdec-8446"
         )]
         public async Task update_book_validation_failed(
-            string bookId,
+            Guid bookId,
             int newYear,
             string newTitle,
-            string newAuthorId,
-            string newGenereId
+            Guid newAuthorId,
+            Guid newGenreId
         )
         {
             var request = new UpdateBookRequest
@@ -238,7 +238,7 @@ namespace BooksApi.UnitTests
                 BookId = bookId,
                 NewTitle = newTitle,
                 NewAuthorId = newAuthorId,
-                NewGenreId = newGenereId,
+                NewGenreId = newGenreId,
                 NewYear = newYear
             };
             

@@ -9,18 +9,18 @@ namespace BooksApi.UseCases.UpdateBook
         {
             RuleFor(x => x.BookId)
                 .NotNull()
-                .MinimumLength(36)
-                .MaximumLength(36);
+                .Must(x => x != Guid.Empty)
+                .WithMessage("Bad guid");
             
             RuleFor(x => x.NewAuthorId)
                 .NotNull()
-                .MinimumLength(36)
-                .MaximumLength(36);
+                .Must(x => x != Guid.Empty)
+                .WithMessage("Bad guid");;
             
             RuleFor(x => x.NewGenreId)
                 .NotNull()
-                .MinimumLength(36)
-                .MaximumLength(36);
+                .Must(x => x != Guid.Empty)
+                .WithMessage("Bad guid");;
             
             RuleFor(x => x.NewTitle)
                 .NotNull()

@@ -1,9 +1,9 @@
 using System;
-using BooksApi.CQRS.Commands.Abstractions;
+using MediatR;
 
 namespace BooksApi.CQRS.Commands
 {
-    public class DeactivateTokenCommand: ICommand
+    public class DeactivateTokenCommand: IRequest
     {
         public Guid UserId { get; set; }
     }

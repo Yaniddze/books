@@ -1,14 +1,15 @@
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using BooksApi.CQRS.Commands;
-using BooksApi.CQRS.Commands.Abstractions;
 using BooksApi.DataBase.Context;
 using BooksApi.DataBase.Entities;
 using BooksApi.Entities;
+using MediatR;
 
 namespace BooksApi.DataBase.CQRS.BookImpl
 {
-    public class AddBookCommandHandler : ICommandHandler<AddBookCommand>
+    public class AddBookCommandHandler : IRequestHandler<AddBookCommand>
     {
         private readonly IContext _context;
         private readonly IMapper _mapper;
@@ -19,18 +20,20 @@ namespace BooksApi.DataBase.CQRS.BookImpl
             _context = context;
         }
 
-        public async Task HandleAsync(AddBookCommand handled)
+        public async Task<Unit> Handle(AddBookCommand request, CancellationToken cancellationToken)
         {
-            var mappedBook = _mapper.Map<Book, BookDB>(handled.BookToAdd);
+            var mappedBook = _mapper.Map<Book, BookDB>(request.BookToAdd);
 
-            mappedBook.AuthorId = handled.BookToAdd.Author.Id;
+            mappedBook.AuthorId = request.BookToAdd.Author.Id;
             mappedBook.Author = null;
-            mappedBook.GenreId = handled.BookToAdd.Genre.Id;
+            mappedBook.GenreId = request.BookToAdd.Genre.Id;
             mappedBook.Genre = null;
             
             _context.Books.Add(mappedBook);
             
             await _context.SaveChangesAsync();
+
+            return Unit.Value;
         }
     }
 }

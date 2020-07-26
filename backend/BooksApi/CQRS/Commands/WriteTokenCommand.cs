@@ -1,9 +1,9 @@
 using System;
-using BooksApi.CQRS.Commands.Abstractions;
+using MediatR;
 
 namespace BooksApi.CQRS.Commands
 {
-    public class WriteTokenCommand: ICommand
+    public class WriteTokenCommand: IRequest
     {
         public Guid Id { get; set; }
         public Guid UserId { get; set; }

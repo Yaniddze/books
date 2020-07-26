@@ -82,7 +82,7 @@ namespace BooksApi.UnitTests.UseCases
             var authorFinder = new FindAuthorQuery(_mapper, context);
             var genreFinder = new FindGenreQuery(_mapper, context);
 
-            var query = new AddBookUseCase(addBookHandler, new AddBookRequestValidator(), authorFinder, genreFinder);
+            var query = new AddBookUseCase(new AddBookRequestValidator(), authorFinder, genreFinder);
 
             return new GenerateQueryResult
             {

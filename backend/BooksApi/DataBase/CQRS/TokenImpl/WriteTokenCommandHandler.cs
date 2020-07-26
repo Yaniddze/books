@@ -1,13 +1,13 @@
-using System;
+using System.Threading;
 using System.Threading.Tasks;
 using BooksApi.CQRS.Commands;
-using BooksApi.CQRS.Commands.Abstractions;
 using BooksApi.DataBase.Context;
 using BooksApi.DataBase.Entities;
+using MediatR;
 
 namespace BooksApi.DataBase.CQRS.TokenImpl
 {
-    public class WriteTokenCommandHandler: ICommandHandler<WriteTokenCommand>
+    public class WriteTokenCommandHandler: IRequestHandler<WriteTokenCommand>
     {
         private readonly IContext _context;
 
@@ -16,16 +16,18 @@ namespace BooksApi.DataBase.CQRS.TokenImpl
             _context = context;
         }
 
-        public async Task HandleAsync(WriteTokenCommand handled)
+        public async Task<Unit> Handle(WriteTokenCommand request, CancellationToken cancellationToken)
         {
             _context.Tokens.Add(new TokenDB
             {
-                Id = handled.Id,
-                UserId = handled.UserId,
+                Id = request.Id,
+                UserId = request.UserId,
                 Active = true,
             });
 
             await _context.SaveChangesAsync();
+            
+            return Unit.Value;
         }
     }
 }

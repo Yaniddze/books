@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using BooksApi.CQRS.Commands;
 using BooksApi.UseCases.Abstractions;
-using BooksApi.UseCases.GenerateToken;
 using BooksApi.UseCases.Login;
 using BooksApi.UseCases.RefreshToken;
 using BooksApi.UseCases.Register;
@@ -39,16 +39,12 @@ namespace BooksApi.Controllers
 
             if (!loginResult.Success) return Ok(response);
 
-            var generateTokenResult = await _mediator.Send(new GenerateTokenRequest
-            {
-                UserId = loginResult.Data
-            });
+            var generateTokenResult = await GenerateToken(loginResult.Data);
 
-            var principal = GeneratePrincipal(loginResult.Data, generateTokenResult.Data);
+            var principal = GeneratePrincipal(loginResult.Data, generateTokenResult);
 
             _logger.LogInformation(
-                $"user {request.Login} login and entered with refresh id {generateTokenResult.Data}");
-
+                $"user {request.Login} login and entered with refresh id {generateTokenResult}");
             
             await HttpContext.SignInAsync(principal);
             
@@ -66,15 +62,20 @@ namespace BooksApi.Controllers
             };
 
             if (!registerResult.Success) return Ok(response);
-            
-            var tokenAnswer = await _mediator.Send(new GenerateTokenRequest {UserId = registerResult.Data});
 
-            var principal = GeneratePrincipal(registerResult.Data, tokenAnswer.Data);
+            await _mediator.Send(new AddUserCommand
+            {
+                UserToAdd = registerResult.Data,
+            });
+
+            var tokenAnswer = await GenerateToken(registerResult.Data.Id);
+
+            var principal = GeneratePrincipal(registerResult.Data.Id, tokenAnswer);
 
             await HttpContext.SignInAsync(principal);
             
             _logger.LogInformation(
-                $"user {request.Login} registered and entered with refresh id {tokenAnswer.Data}");
+                $"user {request.Login} registered and entered with refresh id {tokenAnswer}");
             
             return Ok(response);
         }
@@ -113,17 +114,14 @@ namespace BooksApi.Controllers
                 });
             }
 
-            var generateTokenResponse = await _mediator.Send(new GenerateTokenRequest
-            {
-                UserId = refreshResponse.Data,
-            });
+            var generateTokenResponse = await GenerateToken(refreshResponse.Data);
             
-            var principal = GeneratePrincipal(mappedUserId, generateTokenResponse.Data);
+            var principal = GeneratePrincipal(mappedUserId, generateTokenResponse);
 
             await HttpContext.SignInAsync(principal);
             
             _logger.LogInformation(
-                $"refresh id {refreshInCookie} refreshed with to {generateTokenResponse.Data}");
+                $"refresh id {refreshInCookie} refreshed with to {generateTokenResponse}");
             
             return Ok(new AbstractAnswer
             {
@@ -155,6 +153,26 @@ namespace BooksApi.Controllers
             var principal = new ClaimsPrincipal(new[] {identity});
 
             return principal;
+        }
+
+        private async Task<Guid> GenerateToken(Guid userId)
+        {
+            var tokenId = Guid.NewGuid();
+            
+            await _mediator.Send(new DeactivateTokenCommand
+            {
+                UserId = userId,
+            });
+            
+            var tempCommand = new WriteTokenCommand
+            {
+                Id = tokenId,
+                UserId = userId,
+            };
+
+            await _mediator.Send(tempCommand);
+
+            return tokenId;
         }
     }
 }

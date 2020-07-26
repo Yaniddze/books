@@ -1,9 +1,9 @@
-using BooksApi.CQRS.Commands.Abstractions;
 using BooksApi.Entities;
+using MediatR;
 
 namespace BooksApi.CQRS.Commands
 {
-    public class AddBookCommand: ICommand
+    public class AddBookCommand: IRequest
     {
         public Book BookToAdd { get; set; }
     }

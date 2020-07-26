@@ -1,5 +1,9 @@
+using System;
 using System.Threading.Tasks;
+using AutoMapper;
 using BooksApi.Controllers.Abstractions;
+using BooksApi.CQRS.Commands;
+using BooksApi.UseCases.Abstractions;
 using BooksApi.UseCases.AddBook;
 using BooksApi.UseCases.DeleteBooks;
 using BooksApi.UseCases.GetBooks;
@@ -15,21 +19,34 @@ namespace BooksApi.Controllers
     {
         private readonly IMediator _mediator;
         private readonly ILogger<BookController> _logger;
+        private readonly IMapper _mapper;
 
-        public BookController(IMediator mediator, ILogger<BookController> logger)
+        public BookController(IMediator mediator, ILogger<BookController> logger, IMapper mapper)
         {
             _mediator = mediator;
             _logger = logger;
+            _mapper = mapper;
         }
 
         [HttpPut("add")]
         public async Task<IActionResult> AddAsync([FromBody] AddBookRequest request)
         {
             var result = await _mediator.Send(request);
+
+            if (!result.Success) return Ok(result);
+
+            await _mediator.Send(new AddBookCommand
+            {
+                BookToAdd = result.Data,
+            });
             
-            _logger.LogInformation($"book added with id {result.Data}");
+            _logger.LogInformation($"book added with id {result.Data.Id}");
             
-            return Ok(result);
+            return Ok(new AbstractAnswer<Guid>
+            {
+                Success = true,
+                Data = result.Data.Id,
+            });
         }
 
         [HttpGet("all")]
@@ -43,6 +60,13 @@ namespace BooksApi.Controllers
         public async Task<IActionResult> DeleteAsync([FromBody] DeleteBooksRequest request)
         {
             var result = await _mediator.Send(request);
+
+            if (!result.Success) return Ok(result);
+
+            await _mediator.Send(new DeleteBooksCommand
+            {
+                BookIds = request.BookIds
+            });
             
             foreach (var requestBookId in request.BookIds)
             {
@@ -56,6 +80,12 @@ namespace BooksApi.Controllers
         public async Task<IActionResult> UpdateAsync([FromBody] UpdateBookRequest request)
         {
             var result = await _mediator.Send(request);
+
+            if (!result.Success) return Ok(result);
+
+            var mappedCommand = _mapper.Map<UpdateBookRequest, UpdateBookCommand>(request);
+
+            await _mediator.Send(mappedCommand);
             
             _logger.LogInformation($"book updated with id {request.BookId}");
             

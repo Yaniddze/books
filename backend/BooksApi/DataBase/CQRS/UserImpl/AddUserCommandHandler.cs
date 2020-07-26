@@ -1,14 +1,15 @@
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using BooksApi.CQRS.Commands;
-using BooksApi.CQRS.Commands.Abstractions;
 using BooksApi.DataBase.Context;
 using BooksApi.DataBase.Entities;
 using BooksApi.Entities;
+using MediatR;
 
 namespace BooksApi.DataBase.CQRS.UserImpl
 {
-    public class AddUserCommandHandler: ICommandHandler<AddUserCommand>
+    public class AddUserCommandHandler: IRequestHandler<AddUserCommand>
     {
         private readonly IContext _context;
         private readonly IMapper _mapper;
@@ -19,11 +20,13 @@ namespace BooksApi.DataBase.CQRS.UserImpl
             _context = context;
         }
 
-        public async Task HandleAsync(AddUserCommand handled)
+        public async Task<Unit> Handle(AddUserCommand request, CancellationToken cancellationToken)
         {
-            var mappedUser = _mapper.Map<User, UserDB>(handled.UserToAdd);
+            var mappedUser = _mapper.Map<User, UserDB>(request.UserToAdd);
             _context.Users.Add(mappedUser);
             await _context.SaveChangesAsync();
+            
+            return Unit.Value;
         }
     }
 }

@@ -12,15 +12,15 @@ namespace BooksApi.Installers.AutoMapper.Mappers
             options.CreateMap<UpdateBookRequest, UpdateBookCommand>()
                 .ForMember(x => x.BookId,
                     map => map.MapFrom(
-                        dest => Guid.Parse(dest.BookId)
+                        dest => dest.BookId
                     ))
                 .ForMember(x => x.NewAuthorId,
                     map => map.MapFrom(
-                        dest => Guid.Parse(dest.NewAuthorId)
+                        dest => dest.NewAuthorId
                     ))
                 .ForMember(x => x.NewGenreId,
                     map => map.MapFrom(
-                        dest => Guid.Parse(dest.NewGenreId)
+                        dest => dest.NewGenreId
                     ))
                 .ForMember(x => x.NewTitle,
                     map => map.MapFrom(
