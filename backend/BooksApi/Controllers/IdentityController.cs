@@ -85,9 +85,7 @@ namespace BooksApi.Controllers
 
             Guid.TryParse(refreshInCookie ?? "", out var mappedRefreshId);
             Guid.TryParse(userInCookie ?? "", out var mappedUserId);
-            
-            _logger.LogInformation(refreshInCookie);
-            
+
             if (mappedRefreshId == Guid.Empty || mappedUserId == Guid.Empty)
             {
                 return Ok(new AbstractAnswer
