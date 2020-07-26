@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using BooksApi.UseCases.Abstractions;
 using BooksApi.UseCases.GenerateToken;
@@ -6,7 +9,7 @@ using BooksApi.UseCases.Login;
 using BooksApi.UseCases.RefreshToken;
 using BooksApi.UseCases.Register;
 using MediatR;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -35,14 +38,16 @@ namespace BooksApi.Controllers
             };
 
             if (!loginResult.Success) return Ok(response);
-            
-            var tokenAnswer = await _mediator.Send(new GenerateTokenRequest {UserId = loginResult.Data});
 
-            AddAuthCookies(tokenAnswer.Data.Token, tokenAnswer.Data.RefreshId.ToString());
-            
-            _logger.LogInformation(
-                $"user {request.Login} has entered with refresh id ${tokenAnswer.Data.RefreshId}");
+            var generateTokenResult = await _mediator.Send(new GenerateTokenRequest
+            {
+                UserId = loginResult.Data
+            });
 
+            var principal = GeneratePrincipal(loginResult.Data, generateTokenResult.Data);
+
+            await HttpContext.SignInAsync(principal);
+            
             return Ok(response);
         }
 
@@ -59,11 +64,13 @@ namespace BooksApi.Controllers
             if (!registerResult.Success) return Ok(response);
             
             var tokenAnswer = await _mediator.Send(new GenerateTokenRequest {UserId = registerResult.Data});
-            
-            AddAuthCookies(tokenAnswer.Data.Token, tokenAnswer.Data.RefreshId.ToString());
+
+            var principal = GeneratePrincipal(registerResult.Data, tokenAnswer.Data);
+
+            await HttpContext.SignInAsync(principal);
             
             _logger.LogInformation(
-                $"user ${request.Login} registered and entered with refresh id ${tokenAnswer.Data.RefreshId}");
+                $"user {request.Login} registered and entered with refresh id {tokenAnswer.Data}");
             
             return Ok(response);
         }
@@ -71,27 +78,32 @@ namespace BooksApi.Controllers
         [HttpPost("refresh")]
         public async Task<IActionResult> RefreshAsync()
         {
-            Request.Cookies.TryGetValue(".AspNetCore.Application.Refresh", out var valueInCookie);
+            var cookedPrincipal = HttpContext.User;
 
-            if (valueInCookie == null)
+            var refreshInCookie = cookedPrincipal.Claims.FirstOrDefault(x => x.Type == "refreshId")?.Value;
+            var userInCookie = cookedPrincipal.Claims.FirstOrDefault(x => x.Type == "userId")?.Value;
+
+            Guid.TryParse(refreshInCookie ?? "", out var mappedRefreshId);
+            Guid.TryParse(userInCookie ?? "", out var mappedUserId);
+            
+            _logger.LogInformation(refreshInCookie);
+            
+            if (mappedRefreshId == Guid.Empty || mappedUserId == Guid.Empty)
             {
                 return Ok(new AbstractAnswer
                 {
                     Success = false,
-                    Errors = new []{ "There is no refresh cookie" }
+                    Errors = new []{ "Bad cookies" }
                 });
             }
-
-            var refreshTokenId = Guid.Parse(valueInCookie);
-
+            
             var refreshResponse = await _mediator.Send(new RefreshTokenRequest
             {
-                RefreshTokenId = refreshTokenId,
+                RefreshTokenId = mappedRefreshId,
             });
 
             if (!refreshResponse.Success)
             {
-                DeleteAuthCookies();
                 return Ok(new AbstractAnswer
                 {
                     Success = false,
@@ -103,11 +115,13 @@ namespace BooksApi.Controllers
             {
                 UserId = refreshResponse.Data,
             });
+            
+            var principal = GeneratePrincipal(mappedUserId, generateTokenResponse.Data);
 
-            AddAuthCookies(generateTokenResponse.Data.Token, generateTokenResponse.Data.RefreshId.ToString());
+            await HttpContext.SignInAsync(principal);
             
             _logger.LogInformation(
-                $"refresh id ${valueInCookie} refreshed with to ${generateTokenResponse.Data.RefreshId}");
+                $"refresh id {refreshInCookie} refreshed with to {generateTokenResponse.Data}");
             
             return Ok(new AbstractAnswer
             {
@@ -116,33 +130,29 @@ namespace BooksApi.Controllers
         }
 
         [HttpPost("logout")]
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
-            DeleteAuthCookies();
+            await HttpContext.SignOutAsync();
+            
             return Ok(new AbstractAnswer
             {
                 Success = true,
             });
         }
 
-        private void AddAuthCookies(string token, string refreshId)
+        private static ClaimsPrincipal GeneratePrincipal(Guid userId, Guid refreshId)
         {
-            Response.Cookies.Append(
-                ".AspNetCore.Application.Id",
-                token,
-                new CookieOptions{ MaxAge = TimeSpan.FromMinutes(60), Expires = DateTimeOffset.Now.AddMinutes(60)});
-            
-            Response.Cookies.Append(
-                ".AspNetCore.Application.Refresh",
-                refreshId,
-                new CookieOptions{ MaxAge = TimeSpan.FromMinutes(60), Expires = DateTimeOffset.Now.AddMinutes(60)});
-        }
+            var claims = new List<Claim>
+            {
+                new Claim("userId", userId.ToString()),
+                new Claim("refreshId", refreshId.ToString()),
+            };
 
-        private void DeleteAuthCookies()
-        {
-            Response.Cookies.Delete(".AspNetCore.Application.Id");
-            Response.Cookies.Delete(".AspNetCore.Application.Refresh");
+            var identity = new ClaimsIdentity(claims, "User Identity");
 
+            var principal = new ClaimsPrincipal(new[] {identity});
+
+            return principal;
         }
     }
 }

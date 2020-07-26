@@ -46,7 +46,7 @@ namespace BooksApi.Controllers
             
             foreach (var requestBookId in request.BookIds)
             {
-                _logger.LogInformation($"book deleted with id ${requestBookId}");
+                _logger.LogInformation($"book deleted with id {requestBookId}");
             }
             
             return Ok(result);
@@ -57,7 +57,7 @@ namespace BooksApi.Controllers
         {
             var result = await _mediator.Send(request);
             
-            _logger.LogInformation($"book updated with id ${request.BookId}");
+            _logger.LogInformation($"book updated with id {request.BookId}");
             
             return Ok(result);
         }

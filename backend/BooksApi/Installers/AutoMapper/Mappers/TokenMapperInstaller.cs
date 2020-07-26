@@ -17,10 +17,6 @@ namespace BooksApi.Installers.AutoMapper.Mappers
                     map => map.MapFrom(
                         dest => dest.Id
                     ))
-                .ForMember(x => x.TokenValue,
-                    map => map.MapFrom(
-                        dest => dest.TokenValue
-                    ))
                 .ForMember(x => x.UserId,
                     map => map.MapFrom(
                         dest => dest.UserId
@@ -34,10 +30,6 @@ namespace BooksApi.Installers.AutoMapper.Mappers
                 .ForMember(x => x.Id,
                     map => map.MapFrom(
                         dest => dest.Id
-                    ))
-                .ForMember(x => x.TokenValue,
-                    map => map.MapFrom(
-                        dest => dest.TokenValue
                     ))
                 .ForMember(x => x.UserId,
                     map => map.MapFrom(

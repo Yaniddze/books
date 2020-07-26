@@ -142,10 +142,6 @@ namespace BooksApi.DataBase.Context
             modelBuilder.Entity<TokenDB>()
                 .Property(x => x.Id)
                 .HasColumnName("id");
-                
-            modelBuilder.Entity<TokenDB>()
-                .Property(x => x.TokenValue)
-                .HasColumnName("token_value");
 
             modelBuilder.Entity<TokenDB>()
                 .Property(x => x.Active)

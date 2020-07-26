@@ -21,7 +21,6 @@ namespace BooksApi.DataBase.CQRS.TokenImpl
             _context.Tokens.Add(new TokenDB
             {
                 Id = handled.Id,
-                TokenValue = handled.Token,
                 UserId = handled.UserId,
                 Active = true,
             });

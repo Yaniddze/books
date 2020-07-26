@@ -75,19 +75,6 @@ namespace BooksApi
 //                Secure = CookieSecurePolicy.Always,
             });
 
-            app.Use(async (context, next) =>
-            {
-                context.Request.Cookies.TryGetValue(".AspNetCore.Application.Id", out var token);
-                if (!string.IsNullOrEmpty(token))
-                    context.Request.Headers.Add("Authorization", "Bearer " + token);
-
-                context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
-                context.Response.Headers.Add("X-Xss-Protection", "1");
-                context.Response.Headers.Add("X-Frame-Options", "DENY");
-                
-                await next();
-            });
-
             var path = Directory.GetCurrentDirectory();
             Console.WriteLine(path);
             loggerFactory.AddFile($"{path}/Logs/log.txt");
